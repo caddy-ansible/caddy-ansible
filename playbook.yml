@@ -1,0 +1,12 @@
+---
+- hosts: webserver
+  remote_user: root
+  vars:
+    site_uri: foo.bar
+    user_mail: john.doe@unknow.com
+    site_repo: https://github.com/antoiner77/ansible-site-demo.git
+  roles:
+    - checkntp
+    - git
+    - caddy
+
