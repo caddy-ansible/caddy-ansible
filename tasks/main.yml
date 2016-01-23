@@ -3,7 +3,7 @@
   user: name=caddy system=yes home=/var/lib/caddy
 
 - name: Download caddy
-  get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64 dest=/tmp/caddy.tar.gz
+  get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64&features={{caddy_features}} dest=/tmp/caddy.tar.gz
 
 - name: Extract caddy
   unarchive: src=/tmp/caddy.tar.gz dest=/usr/bin/ creates=/usr/bin/caddy copy=no
@@ -30,12 +30,7 @@
 
 - name: Install git
   apt: name=git update_cache=yes
-  when: install_git
-
-- name: Download the site
-  git: repo={{ site_repo }} dest=/var/www
-  when: install_git
-
+  when: caddy_features | search('git')
 
 - name: Upstart service
   template: src=caddy.conf dest=/etc/init/caddy.conf
