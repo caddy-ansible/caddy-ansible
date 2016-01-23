@@ -3,3 +3,4 @@
 site_uri: foo.bar
 user_mail: foo@foo.bar
 site_repo: https://github.com/antoiner77/ansible-site-demo.git
+install_git: no

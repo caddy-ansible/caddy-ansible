@@ -1,21 +1,15 @@
 ---
-- name: Create Caddy home
-  file: path=/var/lib/caddy state=directory
-
 - name: Create Caddy user
   user: name=caddy system=yes home=/var/lib/caddy
-
-- name: Set perms
-  file: path=/var/lib/caddy state=directory owner=caddy mode=0700
 
 - name: Download caddy
   get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64 dest=/tmp/caddy.tar.gz
 
 - name: Extract caddy
-  command: tar xvf /tmp/caddy.tar.gz -C /tmp/
+  unarchive: src=/tmp/caddy.tar.gz dest=/tmp/ copy=no
 
 - name: Caddy to bin
-  command: mv /tmp/caddy /usr/bin/
+  command: mv /tmp/caddy /usr/bin/ creates=/usr/bin/caddy
 
 - name: Caddy privilege
   command: setcap cap_net_bind_service=+ep /usr/bin/caddy
@@ -26,17 +20,21 @@
 - name: Create Caddy config file
   template: src=Caddyfile dest=/etc/caddy/Caddyfile
 
-- name: Systemd
-  template: src=caddy.service dest=/etc/systemd/system/caddy.service
-
 - name: Create web dir
   file: path=/var/www state=directory
 
-- name: Activation
-  command: systemctl enable caddy.service
+- name: Install git
+  apt: name=git update_cache=yes
+  when: install_git
 
 - name: Download the site
   git: repo={{ site_repo }} dest=/var/www
+  when: site_repo
 
-- name: Start caddy
-  command: systemctl start caddy.service
+- name: Systemd
+  template: src=caddy.service dest=/etc/systemd/system/caddy.service
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Start Caddy site
+  service: name=caddy state=started enabled=yes
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
