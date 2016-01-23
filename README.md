@@ -1,4 +1,4 @@
-Caddy Ansible Playbook
+Caddy Ansible Role
 =========
 
 Installs Caddy
