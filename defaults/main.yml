@@ -1,5 +1,4 @@
 ---
 # defaults file for caddy-ansible
-site_uri: foo.bar
-user_mail: foo@foo.bar
+caddy_email: foo@foo.bar
 caddy_features: git

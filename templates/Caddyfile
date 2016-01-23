@@ -1,5 +1,4 @@
-{{ site_uri }} {
-    tls off
-    gzip
-    root /var/www/
-}
+localhost
+tls off
+gzip
+root /var/www/
