@@ -1,6 +1,5 @@
 ---
-- hosts: localhost
-  remote_user: root
-  connection: local
+- hosts: all
+  become: yes
   roles:
     - caddy-ansible
