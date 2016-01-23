@@ -6,13 +6,18 @@
   get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64 dest=/tmp/caddy.tar.gz
 
 - name: Extract caddy
-  unarchive: src=/tmp/caddy.tar.gz dest=/tmp/ copy=no
+  unarchive: src=/tmp/caddy.tar.gz dest=/usr/bin/ creates=/usr/bin/caddy copy=no
 
-- name: Caddy to bin
-  command: mv /tmp/caddy /usr/bin/ creates=/usr/bin/caddy
 
-- name: Caddy privilege
+- name: Check if the binary can bind to TCP port <1024
+  shell: getcap /usr/bin/caddy | grep cap_net_bind_service
+  failed_when: False
+  changed_when: False
+  register: caddy_bind_cap
+
+- name: Set capability on the binary file to be able to bind to TCP port <1024
   command: setcap cap_net_bind_service=+ep /usr/bin/caddy
+  when: caddy_bind_cap.rc > 0
 
 - name: Create Caddy config dir
   file: path=/etc/caddy state=directory
