@@ -24,7 +24,6 @@ install:
 script:
   # Basic role syntax check
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
-  - ansible-galaxy install joshualund.golang
   - ansible-playbook tests/test.yml -i tests/inventory
 
 notifications:

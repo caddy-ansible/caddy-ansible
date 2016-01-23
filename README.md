@@ -5,8 +5,7 @@ Installs Caddy
 
 Dependencies
 ------------
-
-[Go](https://galaxy.ansible.com/detail#/role/89)
+None
 
 Role Variables
 --------------
