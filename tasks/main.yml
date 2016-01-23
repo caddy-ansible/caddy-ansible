@@ -34,12 +34,16 @@
 
 - name: Download the site
   git: repo={{ site_repo }} dest=/var/www
-  when: site_repo
+  when: install_git
 
-- name: Systemd
+
+- name: Upstart service
+  template: src=caddy.conf dest=/etc/init/caddy.conf
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Systemd service
   template: src=caddy.service dest=/etc/systemd/system/caddy.service
   when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
 
 - name: Start Caddy site
   service: name=caddy state=started enabled=yes
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
