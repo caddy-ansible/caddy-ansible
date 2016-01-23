@@ -9,7 +9,7 @@
   file: path=/var/lib/caddy state=directory owner=caddy mode=0700
 
 - name: Download caddy
-  get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64 dest=/tmp/caddy.tar.gz 
+  get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64 dest=/tmp/caddy.tar.gz
 
 - name: Extract caddy
   command: tar xvf /tmp/caddy.tar.gz -C /tmp/

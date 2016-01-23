@@ -1,9 +1,0 @@
----
-- name: Install ntpdate
-  apt: update_cache=yes cache_valid_time=3600
-  apt: upgrade=dist
-  apt: name=ntpdate state=present
-
-- name: Run ntpdate
-  command: ntpdate 0.fr.pool.ntp.org
-
