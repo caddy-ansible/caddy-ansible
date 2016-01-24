@@ -26,6 +26,8 @@ default:
 caddy_config: |
   localhost:2020
   gzip
+  root /var/www
+  git github.com/antoiner77/caddy-ansible /
 ```
 
 Example Playbook
@@ -40,6 +42,7 @@ Example Playbook
         localhost:2020
         gzip
         root /var/www
+        git github.com/antoiner77/caddy-ansible /
 ```
 
 Contributing

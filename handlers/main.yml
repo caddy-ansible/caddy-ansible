@@ -1,2 +1,4 @@
 ---
 # handlers file for caddy-ansible
+- name: restart caddy
+  service: name=caddy state=restarted

@@ -24,6 +24,8 @@
 
 - name: Create Caddy config file
   copy: content="{{caddy_config}}" dest=/etc/caddy/Caddyfile
+  notify:
+    - restart caddy
 
 - name: Create web dir
   file: path=/var/www state=directory
