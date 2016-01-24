@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/antoiner77/caddy-ansible.svg?branch=master)](https://travis-ci.org/antoiner77/caddy-ansible)
+
 Caddy Ansible Role
 =========
 
