@@ -1,5 +1,0 @@
-{{ site_uri }} {
-    tls off
-    gzip
-    root /var/www/
-}

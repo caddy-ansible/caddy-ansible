@@ -1,0 +1,9 @@
+---
+# defaults file for caddy-ansible
+caddy_email: foo@foo.bar
+caddy_features: git
+caddy_config: |
+  localhost:2020
+  gzip
+  root /var/www
+  git github.com/antoiner77/caddy-ansible /

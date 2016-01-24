@@ -1,0 +1,46 @@
+---
+- name: Create Caddy user
+  user: name=caddy system=yes
+
+- name: Download caddy
+  get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64&features={{caddy_features}} dest=/tmp/caddy.tar.gz
+
+- name: Extract caddy
+  unarchive: src=/tmp/caddy.tar.gz dest=/usr/bin/ creates=/usr/bin/caddy copy=no
+
+
+- name: Check if the binary can bind to TCP port <1024
+  shell: getcap /usr/bin/caddy | grep cap_net_bind_service
+  failed_when: False
+  changed_when: False
+  register: caddy_bind_cap
+
+- name: Set capability on the binary file to be able to bind to TCP port <1024
+  command: setcap cap_net_bind_service=+ep /usr/bin/caddy
+  when: caddy_bind_cap.rc > 0
+
+- name: Create Caddy config dir
+  file: path=/etc/caddy state=directory
+
+- name: Create Caddy config file
+  copy: content="{{caddy_config}}" dest=/etc/caddy/Caddyfile
+  notify:
+    - restart caddy
+
+- name: Create web dir
+  file: path=/var/www state=directory
+
+- name: Install git
+  apt: name=git update_cache=yes
+  when: caddy_features | search('git')
+
+- name: Upstart service
+  template: src=caddy.conf dest=/etc/init/caddy.conf
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- name: Systemd service
+  template: src=caddy.service dest=/etc/systemd/system/caddy.service
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Start Caddy site
+  service: name=caddy state=started enabled=yes
