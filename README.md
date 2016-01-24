@@ -57,3 +57,12 @@ Example Playbook
         foo.bar:
           - root /var/www
 ```
+
+Contributing
+------------
+Pull requests are welcome. Please test your changes beforehand with vagrant:
+```
+vagrant up
+vagrant provision (since it already provisioned there should be no changes here)
+vagrant destroy
+```
