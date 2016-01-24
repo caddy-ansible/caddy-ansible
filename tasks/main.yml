@@ -1,6 +1,6 @@
 ---
 - name: Create Caddy user
-  user: name=caddy system=yes
+  user: name=caddy system=yes createhome=yes
 
 - name: Download caddy
   get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64&features={{caddy_features}} dest=/tmp/caddy.tar.gz
