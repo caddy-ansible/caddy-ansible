@@ -38,7 +38,7 @@ caddy_sites:
         branch development;
       }
 ```
-Site indepentent config options<br>
+Site independent config options<br>
 default:
 ```
 caddy_config:
