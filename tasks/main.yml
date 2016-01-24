@@ -23,7 +23,7 @@
   file: path=/etc/caddy state=directory
 
 - name: Create Caddy config file
-  template: src=Caddyfile dest=/etc/caddy/Caddyfile
+  copy: content="{{caddy_config}}" dest=/etc/caddy/Caddyfile
 
 - name: Create web dir
   file: path=/var/www state=directory

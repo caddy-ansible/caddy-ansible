@@ -20,29 +20,17 @@ default:
 ```
 caddy_features: git
 ```
-List of sites and their options<br>
-example:
-```
-caddy_sites:
-  foo.bar:
-    - root /var/www
-    - gzip
-```
-Directives like git are also possible (notice the semicolons)<br>
-example:
-```
-caddy_sites:
-  foo.bar:
-    - root /var/www
-    - git github.com/user/site {
-        branch development;
-      }
-```
-Site independent config options<br>
+The [Caddyfile](https://caddyserver.com/docs/caddyfile) (notice the pipe)<br>
 default:
 ```
-caddy_config:
-  - gzip
+caddy_config: |
+  localhost:2020
+  gzip
+  log ../access.log
+  markdown /blog {
+    css /resources/blog.css
+    js /resources/scripts.js
+  }
 ```
 
 Example Playbook
@@ -53,9 +41,10 @@ Example Playbook
   roles:
     - role: caddy-ansible
       caddy_email: foo@foo.bar
-      caddy_sites:
-        foo.bar:
-          - root /var/www
+      caddy_config: |
+        localhost:2020
+        gzip
+        root /var/www
 ```
 
 Contributing

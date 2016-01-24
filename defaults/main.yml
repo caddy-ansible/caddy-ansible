@@ -2,8 +2,11 @@
 # defaults file for caddy-ansible
 caddy_email: foo@foo.bar
 caddy_features: git
-caddy_sites:
-  foo.bar:
-    - root /var/www
-caddy_config:
-  - gzip
+caddy_config: |
+  localhost:2020
+  gzip
+  log ../access.log
+  markdown /blog {
+    css /resources/blog.css
+    js /resources/scripts.js
+  }
