@@ -26,11 +26,6 @@ default:
 caddy_config: |
   localhost:2020
   gzip
-  log ../access.log
-  markdown /blog {
-    css /resources/blog.css
-    js /resources/scripts.js
-  }
 ```
 
 Example Playbook
