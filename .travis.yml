@@ -25,6 +25,7 @@ script:
   # Basic role syntax check
   - ansible-playbook tests/test.yml -i tests/inventory --syntax-check
   - ansible-playbook tests/test.yml -i tests/inventory --connection=local
+  - ansible-playbook tests/test.yml -i tests/inventory --connection=local
   - >
     ansible-playbook tests/test.yml -i tests/inventory --connection=local
     | grep -q 'changed=0.*failed=0'
