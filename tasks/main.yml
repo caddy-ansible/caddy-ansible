@@ -30,9 +30,13 @@
   notify:
     - restart caddy
 
-- name: Install git
+- name: apt | Install git
   apt: name=git update_cache=yes
-  when: caddy_features | search('git')
+  when: ansible_pkg_mgr == 'apt' and caddy_features | search('git')
+
+- name: yum | Install git
+  yum: name=git
+  when: ansible_pkg_mgr == 'yum' and caddy_features | search('git')
 
 - name: Upstart service
   template: src=caddy.conf dest=/etc/init/caddy.conf
