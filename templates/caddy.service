@@ -4,6 +4,7 @@ Documentation=https://caddyserver.com/docs
 After=network.target
 
 [Service]
+WorkingDirectory=/home/caddy
 User=caddy
 Environment=STNORESTART=yes
 LimitNOFILE=4096
