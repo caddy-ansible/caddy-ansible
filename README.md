@@ -1,7 +1,7 @@
 Caddy Ansible Role
 =========
 
-Installs Caddy
+This role installs and configures the caddy web server. The user can specify any http configuration parameters they wish to apply their site. Any number of sites can be added with configurations of your choice.
 
 Dependencies
 ------------
@@ -47,5 +47,13 @@ caddy_config:
 
 Example Playbook
 ----------------
-
-Example coming
+```
+---
+- hosts: all
+  roles:
+    - role: caddy-ansible
+      caddy_email: foo@foo.bar
+      caddy_sites:
+        foo.bar:
+          - root /var/www
+```
