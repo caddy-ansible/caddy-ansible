@@ -41,6 +41,7 @@
 - name: Upstart service
   template: src=caddy.conf dest=/etc/init/caddy.conf
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  notify: restart caddy
 
 - name: Systemd service
   template: src=caddy.service dest=/etc/systemd/system/caddy.service
