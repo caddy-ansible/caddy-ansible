@@ -49,7 +49,7 @@ Example Playbook
 
 Debugging
 ---------
-If the service fails to start you can usually tell by looking at the output of Caddy.
+If the service fails to start you can figure out why by looking at the output of Caddy.
 ### Upstart (ubuntu, debian wheezy, centos/rhel 6)
 `tail /var/log/upstart/caddy.log`
 ### Systemd (debian jessie, centos/rhel 7)
