@@ -13,22 +13,7 @@ None
 Role Variables
 --------------
 
-Email is used for the lets encrypt integration:<br>
-example:
-```
-caddy_email: foo@foo.bar
-```
-Auto update Caddy?<br>
-default:
-```
-caddy_update: yes
-```
-Features that can be added to core: cors,git,hugo,ipfilter,jsonp,search<br>
-default:
-```
-caddy_features: git
-```
-The [Caddyfile](https://caddyserver.com/docs/caddyfile) (notice the pipe)<br>
+**The [Caddyfile](https://caddyserver.com/docs/caddyfile)** (notice the pipe)<br>
 default:
 ```
 caddy_config: |
@@ -36,6 +21,21 @@ caddy_config: |
   gzip
   root /var/www
   git github.com/antoiner77/caddy-ansible /
+```
+**Email is used for the lets encrypt integration:**<br>
+example:
+```
+caddy_email: foo@foo.bar
+```
+**Auto update Caddy?**<br>
+default:
+```
+caddy_update: yes
+```
+**Features that can be added to core:** cors,git,hugo,ipfilter,jsonp,search<br>
+default:
+```
+caddy_features: git
 ```
 
 Example Playbook
@@ -55,10 +55,10 @@ Example Playbook
 
 Debugging
 ---------
-If the service fails to start you can figure out why by looking at the output of Caddy.
-### Upstart (ubuntu, debian wheezy, centos/rhel 6)
-`tail /var/log/upstart/caddy.log`
-### Systemd (debian jessie, centos/rhel 7)
+If the service fails to start you can figure out why by looking at the output of Caddy.<br>
+**Upstart (ubuntu, debian wheezy, centos/rhel 6)**<br>
+`tail /var/log/upstart/caddy.log`<br>
+**Systemd (debian jessie, centos/rhel 7)**<br>
 `systemctl status caddy -l`
 
 If something doesn't seem right, open an issue!
