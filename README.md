@@ -47,6 +47,16 @@ Example Playbook
         git github.com/antoiner77/caddy-ansible /
 ```
 
+Debugging
+---------
+If the service fails to start you can usually tell by looking at the output of Caddy.
+### Upstart (ubuntu, debian wheezy, centos/rhel 6)
+`tail /var/log/upstart/caddy.log`
+### Systemd (debian jessie, centos/rhel 7)
+`systemctl status caddy -l`
+
+If something doesn't seem right, open an issue!
+
 Contributing
 ------------
 Pull requests are welcome. Please test your changes beforehand with vagrant:
