@@ -17,6 +17,11 @@ example:
 ```
 caddy_email: foo@foo.bar
 ```
+Auto update Caddy?<br>
+default:
+```
+caddy_update: yes
+```
 Features that can be added to core: cors,git,hugo,ipfilter,jsonp,search<br>
 default:
 ```

@@ -2,6 +2,7 @@
 # defaults file for caddy-ansible
 caddy_email: foo@foo.bar
 caddy_features: git
+caddy_update: yes
 caddy_config: |
   localhost:2020
   gzip

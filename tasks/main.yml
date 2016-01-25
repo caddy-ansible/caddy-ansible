@@ -2,12 +2,26 @@
 - name: Create Caddy user
   user: name=caddy system=yes createhome=yes
 
+- name: Get all Caddy releases
+  uri: url=https://api.github.com/repos/mholt/caddy/git/refs/tags return_content=yes
+  register: caddy_releases
+  when: caddy_update
+
+- name: Check if there is a new release
+  copy: content="{{ (caddy_releases.content|from_json|last).ref }}" dest=/home/caddy/latest.release
+  register: latest_release
+  when: caddy_update
+
+- name: Update caddy
+  get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64&features={{caddy_features}} dest=/tmp/caddy.tar.gz force=yes
+  when: latest_release.changed and caddy_update
+
 - name: Download caddy
   get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64&features={{caddy_features}} dest=/tmp/caddy.tar.gz
+  when: not latest_release.changed
 
 - name: Extract caddy
   unarchive: src=/tmp/caddy.tar.gz dest=/usr/bin/ creates=/usr/bin/caddy copy=no
-
 
 - name: Check if the binary can bind to TCP port <1024
   shell: getcap /usr/bin/caddy | grep cap_net_bind_service
