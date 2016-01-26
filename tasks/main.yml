@@ -27,6 +27,10 @@
 - name: Extract Caddy
   unarchive: src=/home/caddy/caddy.tar.gz dest=/usr/bin/ creates=/usr/bin/caddy copy=no
 
+- name: Install libraries
+  apt: name=libcap2-bin
+  when: ansible_os_family == "Debian"
+
 - name: Check if the binary can bind to TCP port <1024
   shell: getcap /usr/bin/caddy | grep cap_net_bind_service
   failed_when: False
