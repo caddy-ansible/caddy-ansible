@@ -3,10 +3,6 @@
 
 Vagrant.configure(2) do |config|
 
-  config.vm.define "wheezy" do |wheezy|
-    wheezy.vm.box = "debian/wheezy64"
-  end
-
   config.vm.define "jessie" do |jessie|
     jessie.vm.box = "debian/jessie64"
   end
@@ -19,12 +15,12 @@ Vagrant.configure(2) do |config|
     trusty.vm.box = "ubuntu/trusty64"
   end
 
-  config.vm.define "centos6" do |centos6|
-    centos6.vm.box = "geerlingguy/centos6"
-  end
-
   config.vm.define "centos7" do |centos7|
     centos7.vm.box = "centos/7"
+  end
+
+  config.vm.define "fedora22" do |fedora22|
+    fedora22.vm.box = "box-cutter/fedora22"
   end
 
   config.vm.provision "ansible" do |ansible|
