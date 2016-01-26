@@ -38,6 +38,12 @@ default:
 ```
 caddy_features: git
 ```
+**Init-Systems:** systemd, upstart<br>
+By default the role tries to deploy service files for all init systems. This works because the tasks ignore errors if a directory doesn't exist, but there might still be a red error message. To fix this just specify your init system:<br>
+```
+caddy_init_system: false (this tries everything, but might generate red warnings)
+caddy_init_system: systemd (only deploy systemd service and skip everything else)
+```
 
 Example Playbook
 ----------------
