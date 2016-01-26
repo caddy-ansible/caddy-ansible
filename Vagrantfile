@@ -3,12 +3,28 @@
 
 Vagrant.configure(2) do |config|
 
+  config.vm.define "wheezy" do |wheezy|
+    wheezy.vm.box = "debian/wheezy64"
+  end
+
+  config.vm.define "jessie" do |jessie|
+    jessie.vm.box = "debian/jessie64"
+  end
+
+  config.vm.define "precise" do |precise|
+    precise.vm.box = "ubuntu/precise64"
+  end
+
   config.vm.define "trusty" do |trusty|
     trusty.vm.box = "ubuntu/trusty64"
   end
 
+  config.vm.define "centos6" do |centos6|
+    centos6.vm.box = "geerlingguy/centos6"
+  end
+
   config.vm.define "centos7" do |centos7|
-      centos7.vm.box = "centos/7"
+    centos7.vm.box = "centos/7"
   end
 
   config.vm.provision "ansible" do |ansible|
@@ -27,4 +43,6 @@ SCRIPT
   # Fix 'stdin: is not a tty' error
   config.ssh.pty = true
   config.vm.provision :shell, inline: $script
+
+  config.vm.synced_folder ".", "/vagrant", disabled: true
 end
