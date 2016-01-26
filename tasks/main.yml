@@ -4,19 +4,23 @@
 
 - name: Get all Caddy releases
   get_url: url=https://api.github.com/repos/mholt/caddy/git/refs/tags dest=/home/caddy/releases.txt force=yes
-  register: caddy_releases
+  register: caddy_releases_cache
 
-- name: Download or Update caddy
+- name: Set Caddy features
+  copy: content="{{caddy_features}}" dest=/home/caddy/features.txt
+  register: caddy_features_cache
+
+- name: Download Caddy
   get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64&features={{caddy_features}} dest=/home/caddy/caddy.tar.gz force=yes
-  when: caddy_releases.changed and caddy_update
-  register: caddy_binary
+  when: (caddy_releases_cache.changed and caddy_update) or caddy_features_cache.changed
+  register: caddy_binary_cache
 
 - name: Download caddy
   get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64&features={{caddy_features}} dest=/home/caddy/caddy.tar.gz
 
-- name: Update caddy
+- name: Extract caddy
   unarchive: src=/home/caddy/caddy.tar.gz dest=/usr/bin/ copy=no
-  when: caddy_binary.changed and caddy_update
+  when: caddy_binary_cache.changed
 
 - name: Extract caddy
   unarchive: src=/home/caddy/caddy.tar.gz dest=/usr/bin/ creates=/usr/bin/caddy copy=no
