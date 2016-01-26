@@ -33,6 +33,7 @@ default:
 caddy_update: yes
 ```
 **Features that can be added to core:** cors,git,hugo,ipfilter,jsonp,search<br>
+**Warning:** Changing this will also update Caddy to the latest version!<br>
 default:
 ```
 caddy_features: git
