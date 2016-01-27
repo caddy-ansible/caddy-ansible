@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/antoiner77/caddy-ansible.svg?branch=master)](https://travis-ci.org/antoiner77/caddy-ansible)
-[![Galaxy Role](https://img.shields.io/badge/role-antoiner77.Caddy-blue.svg)](https://galaxy.ansible.com/detail#/role/6801)
+[![Galaxy Role](https://img.shields.io/badge/ansible--galaxy-caddy-blue.svg)](https://galaxy.ansible.com/antoiner77/caddy/)
 
 Caddy Ansible Role
 =========
