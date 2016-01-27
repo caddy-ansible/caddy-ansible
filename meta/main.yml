@@ -32,12 +32,7 @@ galaxy_info:
   - name: Fedora
     versions:
       - 22
-
   galaxy_tags:
       - system
       - web
-
   dependencies: []
-  # List your role dependencies here, one per line.
-  # Be sure to remove the '[]' above if you add dependencies
-  # to this list.
