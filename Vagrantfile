@@ -29,7 +29,10 @@ Vagrant.configure(2) do |config|
 
   $script = <<SCRIPT
   # curl localhost and get the http response code
-  http_code=$(curl --silent --output /dev/null --connect-time 10 -w '%{http_code}' localhost:2020)
+  while ! nc -z localhost 2020; do
+    sleep 1 && echo -n .
+  done
+  http_code=$(curl --silent --head --output /dev/null -w '%{http_code}' localhost:2020)
   case $http_code in
     200|404) echo "$http_code | Server running" ;;
     000)     echo "$http_code | Server not accessible!" >&2 ;;
