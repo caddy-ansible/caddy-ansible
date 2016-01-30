@@ -9,7 +9,6 @@ addons:
   apt:
     packages:
     - python-pip
-    - libcap2-bin # contains setcap
 
 install:
   # Install ansible
