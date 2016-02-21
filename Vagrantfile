@@ -16,7 +16,7 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.define "centos7" do |centos7|
-    centos7.vm.box = "centos/7"
+    centos7.vm.box = "puppetlabs/centos-7.2-64-nocm"
   end
 
   config.vm.define "fedora22" do |fedora22|
