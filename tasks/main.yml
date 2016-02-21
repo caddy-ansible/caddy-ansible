@@ -1,4 +1,13 @@
 ---
+- include: packages-apt.yml
+  when: ansible_pkg_mgr == 'apt'
+
+- include: packages-yum.yml
+  when: ansible_pkg_mgr == 'yum'
+
+- include: packages-dnf.yml
+  when: ansible_pkg_mgr == 'dnf'
+
 - name: Create Caddy user
   user: name=caddy system=yes createhome=yes
 
@@ -27,10 +36,6 @@
 - name: Extract Caddy
   unarchive: src=/home/caddy/caddy.tar.gz dest=/usr/bin/ creates=/usr/bin/caddy copy=no
 
-- name: Install libraries
-  apt: name=libcap2-bin
-  when: ansible_os_family == "Debian"
-
 - name: Check if the binary can bind to TCP port <1024
   shell: getcap /usr/bin/caddy | grep cap_net_bind_service
   failed_when: False
@@ -50,15 +55,6 @@
 - name: Create Caddyfile
   copy: content="{{caddy_config}}" dest=/etc/caddy/Caddyfile
   notify: Restart Caddy
-
-- include: packages-apt.yml
-  when: ansible_pkg_mgr == 'apt'
-
-- include: packages-yum.yml
-  when: ansible_pkg_mgr == 'yum'
-
-- include: packages-dnf.yml
-  when: ansible_pkg_mgr == 'dnf'
 
 - name: Upstart service
   template: src=caddy.conf dest=/etc/init/caddy.conf
