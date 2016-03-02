@@ -1,12 +1,5 @@
 ---
-- include: packages-apt.yml
-  when: ansible_pkg_mgr == 'apt'
-
-- include: packages-yum.yml
-  when: ansible_pkg_mgr == 'yum'
-
-- include: packages-dnf.yml
-  when: ansible_pkg_mgr == 'dnf'
+- include: packages-{{ ansible_pkg_mgr }}.yml
 
 - name: Create Caddy user
   user: name=caddy system=yes createhome=yes
