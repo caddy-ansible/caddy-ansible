@@ -55,9 +55,8 @@
   copy: content="{{caddy_config}}" dest=/etc/caddy/Caddyfile
   notify: Restart Caddy
 
-- name: Upstart service
-  template: src=caddy.conf dest=/etc/init/caddy.conf
-  ignore_errors: yes
+- name: Upstart service | copy from caddy distribution
+  copy: src={{ caddy_home }}/init/linux-upstart/caddy.conf dest=/etc/init/caddy.conf mode=0644 remote_src=True 
   when: not caddy_init_system or caddy_init_system == "upstart"
   notify: Restart Caddy
 
