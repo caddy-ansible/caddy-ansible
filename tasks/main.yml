@@ -37,16 +37,18 @@
   shell: getcap /usr/bin/caddy | grep cap_net_bind_service
   failed_when: False
   changed_when: False
+  when: not caddy_init_system or caddy_init_system == "upstart"
   register: caddy_bind_cap
 
 - name: Set capability on the binary file to be able to bind to TCP port <1024
   command: setcap cap_net_bind_service=+ep /usr/bin/caddy
-  when: caddy_bind_cap.rc > 0
+  when: not caddy_init_system or caddy_init_system == "upstart" and caddy_bind_cap.rc > 0
 
 - name: Create directories
-  file: path={{ item }} state=directory owner=caddy
+  file: path={{ item }} state=directory owner={{ caddy_user }} mode=0770
   with_items:
     - /etc/caddy
+    - /etc/ssl/caddy
     - /var/www
 
 - name: Create Caddyfile
@@ -59,9 +61,19 @@
   when: not caddy_init_system or caddy_init_system == "upstart"
   notify: Restart Caddy
 
-- name: Systemd service
-  template: src=caddy.service dest=/etc/systemd/system/caddy.service
+# this may also be copied later on - currently packaged file does not contain the features
+- name: Systemd service | get config from github
+  get_url: url=https://raw.githubusercontent.com/mholt/caddy/master/dist/init/linux-systemd/caddy.service dest=/etc/systemd/system/caddy.service mode=0755
   ignore_errors: yes
+  when: not caddy_init_system or caddy_init_system == "systemd"
+  notify: Reload systemd service file
+
+- name: Systemd service | set ExecStart
+  lineinfile: 
+    state: present
+    dest: /etc/systemd/system/caddy.service
+    regexp: '^ExecStart\='
+    line: 'ExecStart=/usr/bin/caddy -log stdout -agree=true -email {{ caddy_email }} -conf=/etc/caddy/Caddyfile -root=/var/www'
   when: not caddy_init_system or caddy_init_system == "systemd"
   notify: Reload systemd service file
 
