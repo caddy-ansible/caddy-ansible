@@ -1,5 +1,7 @@
 ---
 # defaults file for caddy-ansible
+caddy_user: www-data
+caddy_home: /home/caddy
 caddy_email: foo@foo.bar
 caddy_features: git
 caddy_update: yes

@@ -2,32 +2,32 @@
 - include: packages-{{ ansible_pkg_mgr }}.yml
 
 - name: Create Caddy user
-  user: name=caddy system=yes createhome=yes
+  user: name={{ caddy_user }} system=yes createhome=yes home={{ caddy_home }}
 
 - name: Get all Caddy releases
-  get_url: url=https://api.github.com/repos/mholt/caddy/git/refs/tags dest=/home/caddy/releases.txt force=yes
+  get_url: url=https://api.github.com/repos/mholt/caddy/git/refs/tags dest={{ caddy_home }}/releases.txt force=yes
   when: caddy_update
   register: caddy_releases_cache
 
 - name: Set Caddy features
-  copy: content="{{caddy_features}}" dest=/home/caddy/features.txt
+  copy: content="{{caddy_features}}" dest={{ caddy_home }}/features.txt
   when: caddy_update
   register: caddy_features_cache
 
 - name: Download Caddy
-  get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64&features={{caddy_features}} dest=/home/caddy/caddy.tar.gz force=yes
+  get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64&features={{caddy_features}} dest={{ caddy_home }}/caddy.tar.gz force=yes
   when: caddy_releases_cache.changed or caddy_features_cache.changed
   register: caddy_binary_cache
 
 - name: Download Caddy
-  get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64&features={{caddy_features}} dest=/home/caddy/caddy.tar.gz
+  get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64&features={{caddy_features}} dest={{ caddy_home }}/caddy.tar.gz
 
 - name: Extract Caddy
-  unarchive: src=/home/caddy/caddy.tar.gz dest=/usr/bin/ copy=no
+  unarchive: src={{ caddy_home }}/caddy.tar.gz dest=/usr/bin/ copy=no
   when: caddy_binary_cache.changed
 
 - name: Extract Caddy
-  unarchive: src=/home/caddy/caddy.tar.gz dest=/usr/bin/ creates=/usr/bin/caddy copy=no
+  unarchive: src={{ caddy_home }}/caddy.tar.gz dest=/usr/bin/ creates=/usr/bin/caddy copy=no
 
 - name: Check if the binary can bind to TCP port <1024
   shell: getcap /usr/bin/caddy | grep cap_net_bind_service
