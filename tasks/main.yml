@@ -30,7 +30,8 @@
   unarchive: src={{ caddy_home }}/caddy.tar.gz dest={{ caddy_home }} creates={{ caddy_home }}/caddy copy=no
 
 - name: Copy Caddy Binary
-  copy: src={{ caddy_home }}/caddy dest=/usr/bin/ remote_src=True
+  copy: src={{ caddy_home }}/caddy dest=/usr/bin/ mode=0755 remote_src=True
+  notify: Restart Caddy
 
 - name: Check if the binary can bind to TCP port <1024
   shell: getcap /usr/bin/caddy | grep cap_net_bind_service
