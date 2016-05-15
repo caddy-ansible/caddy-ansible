@@ -50,6 +50,7 @@
     - /etc/caddy
     - /etc/ssl/caddy
     - /var/www
+    - /var/log/caddy
 
 - name: Create Caddyfile
   copy: content="{{caddy_config}}" dest=/etc/caddy/Caddyfile
