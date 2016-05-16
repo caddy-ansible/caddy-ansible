@@ -68,6 +68,7 @@
   when: not caddy_init_system or caddy_init_system == "systemd"
   notify: Reload systemd service file
 
+# In the future, we may add relevant parameters to Caddyfile instead of modifying the call
 - name: Systemd service | set ExecStart
   lineinfile: 
     state: present
