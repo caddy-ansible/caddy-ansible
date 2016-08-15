@@ -49,16 +49,20 @@
   copy: content="{{caddy_config}}" dest=/etc/caddy/Caddyfile
   notify: Restart Caddy
 
+- name: Check if systemd is running
+  stat: path=/run/systemd/system
+  register: systemd
+
 - name: Upstart service
   template: src=caddy.conf dest=/etc/init/caddy.conf
   ignore_errors: yes
-  when: not caddy_init_system or caddy_init_system == "upstart"
+  when: not systemd.stat.exists
   notify: Restart Caddy
 
 - name: Systemd service
   template: src=caddy.service dest=/etc/systemd/system/caddy.service
   ignore_errors: yes
-  when: not caddy_init_system or caddy_init_system == "systemd"
+  when: systemd.stat.exists
   notify: Reload systemd service file
 
 - name: Start Caddy service
