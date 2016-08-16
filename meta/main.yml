@@ -35,4 +35,4 @@ galaxy_info:
   galaxy_tags:
       - system
       - web
-  dependencies: []
+dependencies: []
