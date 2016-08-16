@@ -22,11 +22,6 @@ caddy_config: |
   root /var/www
   git github.com/antoiner77/caddy-ansible /
 ```
-**Email is used for the lets encrypt integration:**<br>
-example:
-```
-caddy_email: foo@foo.bar
-```
 **Auto update Caddy?**<br>
 default:
 ```
