@@ -41,7 +41,6 @@ Example Playbook
 - hosts: all
   roles:
     - role: caddy-ansible
-      caddy_email: foo@foo.bar
       caddy_config: |
         localhost:2020
         gzip
