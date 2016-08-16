@@ -23,26 +23,15 @@
   get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64&features={{ caddy_features }} dest={{ caddy_home }}/caddy.tar.gz
 
 - name: Extract Caddy
-  unarchive: src={{ caddy_home }}/caddy.tar.gz dest={{ caddy_home }} copy=no
+  unarchive: src={{ caddy_home }}/caddy.tar.gz dest={{ caddy_home }} copy=no owner={{ caddy_user }}
   when: caddy_binary_cache.changed
 
 - name: Extract Caddy
-  unarchive: src={{ caddy_home }}/caddy.tar.gz dest={{ caddy_home }} creates={{ caddy_home }}/caddy copy=no
+  unarchive: src={{ caddy_home }}/caddy.tar.gz dest={{ caddy_home }} creates={{ caddy_home }}/caddy copy=no owner={{ caddy_user }}
 
 - name: Copy Caddy Binary
-  copy: src={{ caddy_home }}/caddy dest=/usr/bin/ mode=0755 remote_src=True
+  copy: src={{ caddy_home }}/caddy dest=/usr/local/bin/ mode=0755 remote_src=True
   notify: Restart Caddy
-
-- name: Check if the binary can bind to TCP port <1024
-  shell: getcap /usr/bin/caddy | grep cap_net_bind_service
-  failed_when: False
-  changed_when: False
-  when: not caddy_init_system or caddy_init_system == "upstart"
-  register: caddy_bind_cap
-
-- name: Set capability on the binary file to be able to bind to TCP port <1024
-  command: setcap cap_net_bind_service=+ep /usr/bin/caddy
-  when: not caddy_init_system or caddy_init_system == "upstart" and caddy_bind_cap.rc > 0
 
 - name: Create directories
   file: path={{ item }} state=directory owner={{ caddy_user }} mode=0700
@@ -53,7 +42,7 @@
     - /var/log/caddy
 
 - name: Create Caddyfile
-  copy: content="{{caddy_config}}" dest=/etc/caddy/Caddyfile
+  copy: content="{{caddy_config}}" dest=/etc/caddy/Caddyfile owner={{ caddy_user }}
   notify: Restart Caddy
 
 - name: Check if systemd is running
@@ -61,14 +50,25 @@
   register: systemd
 
 - name: Upstart service
-  copy: src={{ caddy_hom }}/init/linux-upstart/caddy.conf dest=/etc/init/caddy.conf mode=0644 remote_src=True
+  copy: src={{ caddy_home }}/init/linux-upstart/caddy.conf dest=/etc/init/caddy.conf mode=0644 remote_src=True
   when: not systemd.stat.exists
   notify: Restart Caddy
 
 - name: Systemd service
-  copy: src={{ caddy_hom }}/init/linux-systemd/caddy.service dest=/etc/systemd/system/caddy.service mode=0755 remote_src=True
-  when: not systemd.stat.exists
+  copy: src={{ caddy_home }}/init/linux-systemd/caddy.service dest=/etc/systemd/system/caddy.service mode=0755 remote_src=True
+  when: systemd.stat.exists
   notify: Restart Caddy
+
+- name: Check if the binary can bind to TCP port <1024
+  shell: getcap /usr/local/bin/caddy | grep cap_net_bind_service
+  failed_when: False
+  changed_when: False
+  when: not systemd.stat.exists
+  register: caddy_bind_cap
+
+- name: Set capability on the binary file to be able to bind to TCP port <1024
+  command: setcap cap_net_bind_service=+ep /usr/local/bin/caddy
+  when: not systemd.stat.exists and caddy_bind_cap.rc > 0
 
 - name: Start Caddy service
   service: name=caddy state=started enabled=yes
