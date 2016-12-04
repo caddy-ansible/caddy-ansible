@@ -44,6 +44,9 @@ Example Playbook
       caddy_config: |
         localhost:2020
         gzip
+        
+        tls email@example.com
+        
         root /var/www
         git github.com/antoiner77/caddy-ansible /
 ```
