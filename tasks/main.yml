@@ -50,12 +50,16 @@
   register: systemd
 
 - name: Upstart service
-  copy: src={{ caddy_home }}/init/linux-upstart/caddy.conf dest=/etc/init/caddy.conf mode=0644 remote_src=True
+  template: src={{ item }} dest=/etc/init/caddy.conf mode=0644
   when: not systemd.stat.exists
+  with_first_found:
+    - "caddy.conf.{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}"
+    - "caddy.conf.{{ ansible_distribution | lower }}-{{ ansible_distribution_version }}"
+    - "caddy.conf"
   notify: Restart Caddy
 
 - name: Systemd service
-  copy: src={{ caddy_home }}/init/linux-systemd/caddy.service dest=/etc/systemd/system/caddy.service mode=0755 remote_src=True
+  template: src=caddy.service dest=/etc/systemd/system/caddy.service mode=0755
   when: systemd.stat.exists
   notify: Restart Caddy
 
@@ -63,12 +67,11 @@
   shell: getcap /usr/local/bin/caddy | grep cap_net_bind_service
   failed_when: False
   changed_when: False
-  when: not systemd.stat.exists
   register: caddy_bind_cap
 
 - name: Set capability on the binary file to be able to bind to TCP port <1024
   command: setcap cap_net_bind_service=+ep /usr/local/bin/caddy
-  when: not systemd.stat.exists and caddy_bind_cap.rc > 0
+  when: caddy_bind_cap.rc > 0
 
 - name: Start Caddy service
   service: name=caddy state=started enabled=yes
