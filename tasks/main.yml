@@ -61,7 +61,7 @@
 - name: Systemd service
   template: src=caddy.service dest=/etc/systemd/system/caddy.service mode=0755
   when: systemd.stat.exists
-  notify: Restart Caddy
+  notify: Reload systemd service file
 
 - name: Check if the binary can bind to TCP port <1024
   shell: getcap /usr/local/bin/caddy | grep cap_net_bind_service
