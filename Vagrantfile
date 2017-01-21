@@ -8,19 +8,23 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.define "precise" do |precise|
-    precise.vm.box = "ubuntu/precise64"
+    precise.vm.box = "bento/ubuntu-12.04"
   end
 
   config.vm.define "trusty" do |trusty|
-    trusty.vm.box = "ubuntu/trusty64"
+    trusty.vm.box = "bento/ubuntu-14.04"
+  end
+
+  config.vm.define "xenial" do |xenial|
+    xenial.vm.box = "bento/ubuntu-16.04"
   end
 
   config.vm.define "centos7" do |centos7|
-    centos7.vm.box = "puppetlabs/centos-7.2-64-nocm"
+    centos7.vm.box = "bento/centos-7.3"
   end
 
   config.vm.define "fedora22" do |fedora22|
-    fedora22.vm.box = "box-cutter/fedora22"
+    fedora22.vm.box = "bento/fedora-22"
   end
 
   config.vm.provision "ansible" do |ansible|
