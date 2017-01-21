@@ -28,7 +28,7 @@ default:
 ```
 caddy_update: yes
 ```
-**Features that can be added to core:** cors,git,hugo,ipfilter,jsonp,search<br>
+**Features that can be added to core:** DNS,awslambda,cors,expires,filemanager,filter,git,hugo,ipfilter,jsonp,jwt,locale,mailout,minify,multipass,prometheus,ratelimit,realip,search,upload<br>
 Changing this variable will reinstall Caddy with the new features if `caddy_update` is enabled<br>
 default:
 ```
