@@ -66,17 +66,11 @@
   when: systemd.stat.exists
   notify: Reload systemd service file
 
-- name: Check if the binary can bind to TCP port <1024
-  shell: getcap {{ caddy_bin|quote }} | grep cap_net_bind_service
-  when: caddy_setcap
-  failed_when: False
-  changed_when: False
-  check_mode: no
-  register: caddy_bind_cap
-
 - name: Set capability on the binary file to be able to bind to TCP port <1024
-  command: setcap cap_net_bind_service=+ep {{ caddy_bin|quote }}
-  when: caddy_setcap and (caddy_bind_cap.rc > 0)
+  capabilities:
+    path: "{{ caddy_bin }}"
+    capability: cap_net_bind_service+ep
+    state: present
 
 - name: Start Caddy service
   service: name=caddy state=started enabled=yes
