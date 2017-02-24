@@ -67,6 +67,7 @@
   shell: getcap /usr/local/bin/caddy | grep cap_net_bind_service
   failed_when: False
   changed_when: False
+  check_mode: no
   register: caddy_bind_cap
 
 - name: Set capability on the binary file to be able to bind to TCP port <1024
