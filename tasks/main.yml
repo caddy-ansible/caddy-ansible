@@ -42,7 +42,6 @@
   with_items:
     - "{{ caddy_conf_dir }}"
     - /etc/ssl/caddy
-    - /var/www
     - /var/log/caddy
 
 - name: Create Caddyfile
