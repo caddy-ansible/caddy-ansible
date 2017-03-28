@@ -1,6 +1,7 @@
 # source: https://github.com/mholt/caddy/blob/master/dist/init/linux-upstart/caddy.conf.ubuntu-12.04
 # version: 7dc23b1
-# changes: none
+# changes:
+# * Set user and group via ansible
 
 description "Caddy HTTP/2 web server"
 
@@ -9,8 +10,8 @@ stop on runlevel [016]
 
 console log
 
-setuid www-data
-setgid www-data
+setuid {{ caddy_user }}
+setgid {{ caddy_user }}
 
 respawn
 respawn limit 10 5
