@@ -41,7 +41,7 @@
   file: path={{ item }} state=directory owner={{ caddy_user }} mode=0700
   with_items:
     - "{{ caddy_conf_dir }}"
-    - /etc/ssl/caddy
+    - "{{ caddy_certs_dir }}"
 
 - name: Create Caddyfile
   copy: content="{{ caddy_config }}" dest="{{ caddy_conf_dir }}/Caddyfile" owner={{ caddy_user }}

@@ -1,5 +1,5 @@
 ; source: https://github.com/mholt/caddy/blob/master/dist/init/linux-systemd/caddy.service
-; version: 466269f
+; version: 6be0386
 ; changes: Set variables via Ansible
 
 [Unit]
@@ -18,7 +18,7 @@ User={{caddy_user}}
 Group={{caddy_user}}
 
 ; Letsencrypt-issued certificates will be written to this directory.
-Environment=CADDYPATH=/etc/ssl/caddy
+Environment=CADDYPATH={{ caddy_certs_dir }}
 
 ; Always set "-root" to something safe in case it gets forgotten in the Caddyfile.
 ExecStart={{ caddy_bin_dir }}/caddy -log {{ caddy_log_file }} -agree=true -conf={{ caddy_conf_dir }}/Caddyfile -root=/var/tmp
@@ -37,9 +37,9 @@ PrivateDevices=true
 ProtectHome=true
 ; Make /usr, /boot, /etc and possibly some more folders read-only.
 ProtectSystem=full
-; … except /etc/ssl/caddy, because we want Letsencrypt-certificates there.
+; … except {{ caddy_certs_dir }}, because we want Letsencrypt-certificates there.
 ;   This merely retains r/w access rights, it does not add any new. Must still be writable on the host!
-ReadWriteDirectories=/etc/ssl/caddy
+ReadWriteDirectories={{ caddy_certs_dir }}
 
 ; The following additional security directives only work with systemd v229 or later.
 ; They further retrict privileges that can be gained by caddy. Uncomment if you like.
