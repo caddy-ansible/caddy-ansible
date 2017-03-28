@@ -40,13 +40,13 @@
 - name: Create directories
   file: path={{ item }} state=directory owner={{ caddy_user }} mode=0700
   with_items:
-    - /etc/caddy
+    - "{{ caddy_conf_dir }}"
     - /etc/ssl/caddy
     - /var/www
     - /var/log/caddy
 
 - name: Create Caddyfile
-  copy: content="{{caddy_config}}" dest=/etc/caddy/Caddyfile owner={{ caddy_user }}
+  copy: content="{{ caddy_config }}" dest="{{ caddy_conf_dir }}/Caddyfile" owner={{ caddy_user }}
   notify: Restart Caddy
 
 - name: Check if systemd is running
