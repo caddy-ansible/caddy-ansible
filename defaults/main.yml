@@ -6,6 +6,7 @@ caddy_features: git
 caddy_update: yes
 caddy_bin_dir: /usr/local/bin
 caddy_conf_dir: /etc/caddy
+caddy_log_file: stdout
 caddy_config: |
   localhost:2020
   gzip
