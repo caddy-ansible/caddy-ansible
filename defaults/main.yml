@@ -4,6 +4,7 @@ caddy_user: www-data
 caddy_home: /home/caddy
 caddy_features: git
 caddy_update: yes
+caddy_bin_dir: /usr/local/bin
 caddy_config: |
   localhost:2020
   gzip
