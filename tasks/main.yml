@@ -42,7 +42,6 @@
   with_items:
     - "{{ caddy_conf_dir }}"
     - /etc/ssl/caddy
-    - /var/log/caddy
 
 - name: Create Caddyfile
   copy: content="{{ caddy_config }}" dest="{{ caddy_conf_dir }}/Caddyfile" owner={{ caddy_user }}
