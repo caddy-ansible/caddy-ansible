@@ -1,10 +1,6 @@
 ; source: https://github.com/mholt/caddy/blob/master/dist/init/linux-systemd/caddy.service
 ; version: 466269f
-; changes:
-; * 2017-01-16 klauern - parameterize User/Group with template variable 'caddy_user'
-; * Set binary dir via Ansible
-; * Set configuration dir via Ansible
-; * Set log file via Ansible
+; changes: Set variables via Ansible
 
 [Unit]
 Description=Caddy HTTP/2 web server
