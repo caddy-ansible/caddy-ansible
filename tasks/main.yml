@@ -29,20 +29,22 @@
 - name: Extract Caddy
   unarchive: src={{ caddy_home }}/caddy.tar.gz dest={{ caddy_home }} creates={{ caddy_home }}/caddy copy=no owner={{ caddy_user }}
 
+- name: Determine Caddy binary path
+  set_fact:
+    caddy_bin: "{{ caddy_bin_dir }}/caddy"
+
 - name: Copy Caddy Binary
-  copy: src={{ caddy_home }}/caddy dest=/usr/local/bin/ mode=0755 remote_src=True
+  copy: src={{ caddy_home }}/caddy dest={{ caddy_bin }} mode=0755 remote_src=True
   notify: Restart Caddy
 
 - name: Create directories
   file: path={{ item }} state=directory owner={{ caddy_user }} mode=0700
   with_items:
-    - /etc/caddy
+    - "{{ caddy_conf_dir }}"
     - /etc/ssl/caddy
-    - /var/www
-    - /var/log/caddy
 
 - name: Create Caddyfile
-  copy: content="{{caddy_config}}" dest=/etc/caddy/Caddyfile owner={{ caddy_user }}
+  copy: content="{{ caddy_config }}" dest="{{ caddy_conf_dir }}/Caddyfile" owner={{ caddy_user }}
   notify: Restart Caddy
 
 - name: Check if systemd is running
@@ -64,14 +66,14 @@
   notify: Reload systemd service file
 
 - name: Check if the binary can bind to TCP port <1024
-  shell: getcap /usr/local/bin/caddy | grep cap_net_bind_service
+  shell: getcap {{ caddy_bin|quote }} | grep cap_net_bind_service
   failed_when: False
   changed_when: False
   check_mode: no
   register: caddy_bind_cap
 
 - name: Set capability on the binary file to be able to bind to TCP port <1024
-  command: setcap cap_net_bind_service=+ep /usr/local/bin/caddy
+  command: setcap cap_net_bind_service=+ep {{ caddy_bin|quote }}
   when: caddy_bind_cap.rc > 0
 
 - name: Start Caddy service
