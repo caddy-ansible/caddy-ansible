@@ -34,6 +34,11 @@ default:
 ```
 caddy_features: git
 ```
+**Use `setcap` for allowing Caddy to open a low port (e.g. 80, 443)?**
+default:
+```
+caddy_setcap: yes
+```
 
 Example Playbook
 ----------------
