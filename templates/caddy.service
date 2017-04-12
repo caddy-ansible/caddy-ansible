@@ -14,8 +14,8 @@ StartLimitInterval=86400
 StartLimitBurst=5
 
 ; User and group the process will run as.
-User={{caddy_user}}
-Group={{caddy_user}}
+User={{ caddy_user }}
+Group={{ caddy_user }}
 
 ; Letsencrypt-issued certificates will be written to this directory.
 Environment=CADDYPATH={{ caddy_certs_dir }}
@@ -30,13 +30,13 @@ LimitNOFILE=1048576
 LimitNPROC=64
 
 ; Use private /tmp and /var/tmp, which are discarded after caddy stops.
-PrivateTmp=true
+PrivateTmp={{ caddy_systemd_private_tmp }}
 ; Use a minimal /dev
-PrivateDevices=true
+PrivateDevices={{ caddy_systemd_private_devices }}
 ; Hide /home, /root, and /run/user. Nobody will steal your SSH-keys.
-ProtectHome=true
+ProtectHome={{ caddy_systemd_protect_home }}
 ; Make /usr, /boot, /etc and possibly some more folders read-only.
-ProtectSystem=full
+ProtectSystem={{ caddy_systemd_protect_system }}
 ; … except {{ caddy_certs_dir }}, because we want Letsencrypt-certificates there.
 ;   This merely retains r/w access rights, it does not add any new. Must still be writable on the host!
 ReadWriteDirectories={{ caddy_certs_dir }}
