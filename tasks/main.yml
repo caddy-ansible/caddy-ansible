@@ -15,12 +15,12 @@
   register: caddy_features_cache
 
 - name: Download Caddy
-  get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64&features={{ caddy_features }} dest={{ caddy_home }}/caddy.tar.gz force=yes
+  get_url: url=https://caddyserver.com/download/linux/amd64?plugins={{ caddy_features }} dest={{ caddy_home }}/caddy.tar.gz force=yes
   when: caddy_releases_cache.changed or caddy_features_cache.changed
   register: caddy_binary_cache
 
 - name: Download Caddy
-  get_url: url=https://caddyserver.com/download/build?os=linux&arch=amd64&features={{ caddy_features }} dest={{ caddy_home }}/caddy.tar.gz
+  get_url: url=https://caddyserver.com/download/linux/amd64?plugins={{ caddy_features }} dest={{ caddy_home }}/caddy.tar.gz
 
 - name: Extract Caddy
   unarchive: src={{ caddy_home }}/caddy.tar.gz dest={{ caddy_home }} copy=no owner={{ caddy_user }}
