@@ -8,6 +8,10 @@ caddy_bin_dir: /usr/local/bin
 caddy_conf_dir: /etc/caddy
 caddy_log_file: stdout
 caddy_certs_dir: /etc/ssl/caddy
+caddy_systemd_network_dependency: True
+caddy_systemd_restart: "on-failure" # alway, on-success, on-failure, on-abnormal, on-abort, on-watchdog
+caddy_systemd_restart_startlimitinterval: "86400"
+caddy_systemd_restart_startlimitburst: "5"
 caddy_systemd_private_tmp: "true"
 caddy_systemd_private_devices: "true"
 caddy_systemd_protect_home: "true"
