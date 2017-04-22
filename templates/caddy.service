@@ -1,3 +1,5 @@
+; {{ ansible_managed }}
+;
 ; source: https://github.com/mholt/caddy/blob/master/dist/init/linux-systemd/caddy.service
 ; version: 6be0386
 ; changes: Set variables via Ansible
@@ -6,12 +8,14 @@
 Description=Caddy HTTP/2 web server
 Documentation=https://caddyserver.com/docs
 After=network-online.target
+{% if caddy_systemd_network_dependency == true %}
 Wants=network-online.target systemd-networkd-wait-online.service
+{% endif %}
 
 [Service]
-Restart=on-failure
-StartLimitInterval=86400
-StartLimitBurst=5
+Restart={{ caddy_systemd_restart }}
+StartLimitInterval={{ caddy_systemd_restart_startlimitinterval }}
+StartLimitBurst= {{ caddy_systemd_restart_startlimitburst }}
 
 ; User and group the process will run as.
 User={{ caddy_user }}
