@@ -61,7 +61,7 @@
   notify: Restart Caddy
 
 - name: Systemd service
-  template: src=caddy.service dest=/etc/systemd/system/caddy.service mode=0755
+  template: src=caddy.service dest=/etc/systemd/system/caddy.service mode=0644
   when: systemd.stat.exists
   notify: Reload systemd service file
 
