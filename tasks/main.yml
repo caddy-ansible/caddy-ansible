@@ -38,10 +38,11 @@
   notify: Restart Caddy
 
 - name: Create directories
-  file: path={{ item }} state=directory owner={{ caddy_user }} mode=0700
+  file: path={{ item }} state=directory owner={{ caddy_user }} mode='0770'
   with_items:
     - "{{ caddy_conf_dir }}"
     - "{{ caddy_certs_dir }}"
+    - "{{ caddy_log_dir }}"
 
 - name: Create Caddyfile
   copy: content="{{ caddy_config }}" dest="{{ caddy_conf_dir }}/Caddyfile" owner={{ caddy_user }}
