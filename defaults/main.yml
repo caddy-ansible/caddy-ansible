@@ -10,6 +10,7 @@ caddy_conf_dir: /etc/caddy
 caddy_log_dir: /var/log/caddy
 caddy_log_file: stdout
 caddy_certs_dir: /etc/ssl/caddy
+caddy_http2_enabled: "true"
 caddy_systemd_network_dependency: True
 caddy_systemd_restart: "on-failure" # alway, on-success, on-failure, on-abnormal, on-abort, on-watchdog
 caddy_systemd_restart_startlimitinterval: "86400"
