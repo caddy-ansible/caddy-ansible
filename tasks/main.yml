@@ -71,6 +71,7 @@
     path: "{{ caddy_bin }}"
     capability: cap_net_bind_service+ep
     state: present
+  when: caddy_setcap
 
 - name: Start Caddy service
   service: name=caddy state=started enabled=yes
