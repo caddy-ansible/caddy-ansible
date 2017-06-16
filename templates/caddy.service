@@ -45,12 +45,14 @@ ProtectSystem={{ caddy_systemd_protect_system }}
 ;   This merely retains r/w access rights, it does not add any new. Must still be writable on the host!
 ReadWriteDirectories={{ caddy_certs_dir }}
 
+{% if caddy_systemd_capabilities_enabled %}
 ; The following additional security directives only work with systemd v229 or later.
-; They further retrict privileges that can be gained by caddy. Uncomment if you like.
+; They further retrict privileges that can be gained by caddy.
 ; Note that you may have to add capabilities required by any plugins in use.
-;CapabilityBoundingSet=CAP_NET_BIND_SERVICE
-;AmbientCapabilities=CAP_NET_BIND_SERVICE
-;NoNewPrivileges=true
+CapabilityBoundingSet={{ caddy_systemd_capabilities }}
+AmbientCapabilities={{ caddy_systemd_capabilities }}
+NoNewPrivileges=true
 
+{% endif %}
 [Install]
 WantedBy=multi-user.target
