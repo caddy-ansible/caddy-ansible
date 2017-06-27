@@ -22,6 +22,10 @@ caddy_systemd_private_devices: "true"
 caddy_systemd_protect_home: "true"
 caddy_systemd_protect_system: "full"
 caddy_setcap: yes
+caddy_pgp_key_id: 65760C51EDEA2017CEA2CA15155B6D79CA56EA34
+caddy_pgp_key_server: hkp://keyserver.ubuntu.com
+caddy_pgp_recv_timeout: 60
+caddy_pgp_verify_signatures: no
 caddy_config: |
   localhost:2020
   gzip

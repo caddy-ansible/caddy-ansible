@@ -39,7 +39,10 @@ default:
 ```
 caddy_setcap: yes
 ```
-
+**Verify the PGP signature on download?**<br>
+```
+caddy_pgp_verify_signatures: no
+```
 **Use systemd capabilities controls**<br>
 default:
 ```
