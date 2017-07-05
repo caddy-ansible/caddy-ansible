@@ -34,11 +34,27 @@ default:
 ```
 caddy_features: git
 ```
-**Use `setcap` for allowing Caddy to open a low port (e.g. 80, 443)?**
+**Use `setcap` for allowing Caddy to open a low port (e.g. 80, 443)?**<br>
 default:
 ```
 caddy_setcap: yes
 ```
+
+**Use systemd capabilities controls**<br>
+default:
+```
+caddy_systemd_capabilities_enabled: False
+caddy_systemd_capabilities: "CAP_NET_BIND_SERVICE"
+```
+NOTE: This feature requires systemd v229 or newer and might be needed in addition to `caddy_setcap: yes`.
+
+Supported:
+* Debian 9 (stretch)
+* Fedora 25
+* Ubuntu 16.04 (xenial)
+
+RHEL/CentOS has no release that supports systemd capability controls at this time.
+
 
 Example Playbook
 ----------------
