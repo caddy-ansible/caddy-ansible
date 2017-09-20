@@ -58,8 +58,17 @@ Supported:
 
 RHEL/CentOS has no release that supports systemd capability controls at this time.
 
+**Add additional environment variables**<br>
 
-Example Playbook
+Add environment variables to the systemd/upstart script
+
+```
+caddy_environment_variables:
+  FOO: bar
+  SECONDVAR: spam
+```
+
+Example Playbooks
 ----------------
 ```
 ---
@@ -74,6 +83,31 @@ Example Playbook
 
         root /var/www
         git github.com/antoiner77/caddy-ansible
+```
+
+Example with Cloudflare DNS for TLS 
+
+```
+---
+- hosts: all
+  roles:
+    - role: caddy-ansible
+      caddy_features: tls.dns.cloudflare
+      caddy_environment_variables:
+        CLOUDFLARE_EMAIL: your@email.com
+        CLOUDFLARE_API_KEY: 1234567890
+      caddy_config: |
+        yourcloudflareddomain.com {
+    
+            tls {
+                dns cloudflare
+            }
+            
+            gzip
+    
+            root /var/www
+            git github.com/antoiner77/caddy-ansible
+        }
 ```
 
 Debugging
