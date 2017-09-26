@@ -22,6 +22,7 @@ reload signal SIGUSR1
 
 # Let's Encrypt certificates will be written to this directory.
 env CADDYPATH={{ caddy_certs_dir }}
+
 {% if caddy_environment_variables|length %}
 
 # Additional environment variables:

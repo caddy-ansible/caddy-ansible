@@ -20,6 +20,7 @@ respawn limit 10 5
 
 # Let's Encrypt certificates will be written to this directory.
 env CADDYPATH={{ caddy_certs_dir }}
+
 {% if caddy_environment_variables|length %}
 
 # Additional environment variables:
