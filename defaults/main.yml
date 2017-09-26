@@ -32,3 +32,5 @@ caddy_config: |
   # tls email@example.com
   # root /var/www
   git github.com/antoiner77/caddy-ansible
+
+caddy_environment_variables: ""
