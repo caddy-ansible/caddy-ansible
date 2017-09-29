@@ -33,4 +33,4 @@ caddy_config: |
   # root /var/www
   git github.com/antoiner77/caddy-ansible
 
-caddy_environment_variables: ""
+caddy_environment_variables: {}
