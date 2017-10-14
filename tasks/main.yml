@@ -37,7 +37,7 @@
   changed_when: '"imported" in caddy_pgp_key.stdout'
 
 - name: Download Caddy signature
-  get_url: url=https://caddyserver.com/download/linux/{{ caddy_arch }}/signature?plugins={{ caddy_features }} dest={{ caddy_home }}/caddy.tar.gz.asc timeout=60
+  get_url: url=https://caddyserver.com/download/linux/{{ caddy_arch }}/signature?plugins={{ caddy_features }} dest={{ caddy_home }}/caddy.tar.gz.asc timeout=60 force=yes
   when: caddy_pgp_verify_signatures
 
 - name: Verify Caddy signature
