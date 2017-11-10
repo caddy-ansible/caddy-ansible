@@ -28,7 +28,17 @@ default:
 ```
 caddy_update: yes
 ```
-**Features that can be added to core:** DNS, awslambda, cors, expires, filemanager, filter, git, hugo, ipfilter, jsonp, jwt, locale, mailout, minify, multipass, prometheus, ratelimit, realip, search, upload<br>
+**Features that can be added to core:** http.authz, http.awses, http.awslambda, 
+http.cache, http.cgi, http.cors, http.datadog, http.expires, http.filemanager, 
+http.filter, http.forwardproxy, http.git, http.gopkg, http.grpc, http.hugo, 
+http.ipfilter, http.jekyll, http.jwt, http.locale, http.login, http.mailout, 
+http.minify, http.nobots, http.prometheus, http.proxyprotocol, http.ratelimit, 
+http.realip, http.reauth, http.restic, http.upload, http.webdav, dns, net, 
+hook.service, tls.dns.azure, tls.dns.cloudflare, tls.dns.digitalocean, 
+tls.dns.dnsimple, tls.dns.dnspod, tls.dns.dyn, tls.dns.exoscale, tls.dns.gandi, 
+tls.dns.googlecloud, tls.dns.linode, tls.dns.namecheap, tls.dns.ovh, 
+tls.dns.rackspace, tls.dns.rfc2136, tls.dns.route53, tls.dns.vultr   
+
 Changing this variable will reinstall Caddy with the new features if `caddy_update` is enabled<br>
 default:
 ```
