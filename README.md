@@ -42,7 +42,7 @@ tls.dns.rackspace, tls.dns.rfc2136, tls.dns.route53, tls.dns.vultr
 Changing this variable will reinstall Caddy with the new features if `caddy_update` is enabled<br>
 default:
 ```
-caddy_features: git
+caddy_features: http.git
 ```
 **Use `setcap` for allowing Caddy to open a low port (e.g. 80, 443)?**<br>
 default:
