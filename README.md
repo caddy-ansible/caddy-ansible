@@ -23,6 +23,16 @@ caddy_config: |
   root /var/www
   git github.com/antoiner77/caddy-ansible
 ```
+**The type of license to use**<br>
+default:
+```
+caddy_license: personal
+```
+If you set the license type to `commercial` then you should also specify (replacing the dummy values with your real ones):
+```
+caddy_license_account_id: YOUR_ACCOUNT_ID
+caddy_license_api_key: YOUR_API_KEY
+```
 **Auto update Caddy?**<br>
 default:
 ```
