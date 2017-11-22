@@ -21,6 +21,7 @@
 
 - name: Download Caddy
   get_url: url=https://caddyserver.com/download/linux/{{ caddy_arch }}?plugins={{ caddy_features }} dest={{ caddy_home }}/caddy.tar.gz
+  register: caddy_download
 
 - name: Check if Caddy PGP key is already in keyring
   command: gpg --list-keys {{ caddy_pgp_key_id }}
@@ -37,12 +38,12 @@
   changed_when: '"imported" in caddy_pgp_key.stdout'
 
 - name: Download Caddy signature
-  get_url: url=https://caddyserver.com/download/linux/{{ caddy_arch }}/signature?plugins={{ caddy_features }} dest={{ caddy_home }}/caddy.tar.gz.asc timeout=60
-  when: caddy_pgp_verify_signatures
+  get_url: url=https://caddyserver.com/download/linux/{{ caddy_arch }}/signature?plugins={{ caddy_features }} dest={{ caddy_home }}/caddy.tar.gz.asc timeout=60 force=yes
+  when: caddy_pgp_verify_signatures and (caddy_binary_cache.changed or caddy_download.changed)
 
 - name: Verify Caddy signature
   command: gpg --verify {{ caddy_home }}/caddy.tar.gz.asc {{ caddy_home }}/caddy.tar.gz
-  when: caddy_pgp_verify_signatures
+  when: caddy_pgp_verify_signatures and (caddy_binary_cache.changed or caddy_download.changed)
 
 - name: Extract Caddy
   unarchive: src={{ caddy_home }}/caddy.tar.gz dest={{ caddy_home }} copy=no owner={{ caddy_user }}
