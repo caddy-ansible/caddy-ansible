@@ -4,6 +4,7 @@
   service: name=caddy state=restarted
 
 - name: Reload systemd service file
-  command: systemctl daemon-reload
+  systemd:
+    daemon-reload: yes
   notify: Restart Caddy
   ignore_errors: yes

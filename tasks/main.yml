@@ -33,16 +33,19 @@
   get_url: url={{ caddy_url }} dest={{ caddy_home }}/caddy.tar.gz force_basic_auth={{ caddy_license != 'personal' }} force=yes
   when: caddy_releases_cache.changed or caddy_features_cache.changed
   register: caddy_binary_cache
+  tags: skip_ansible_lint
 
 - name: Download Caddy
   get_url: url={{ caddy_url}} dest={{ caddy_home }}/caddy.tar.gz force_basic_auth={{ caddy_license != 'personal' }}
   register: caddy_download
+  tags: skip_ansible_lint
 
 - name: Check if Caddy PGP key is already in keyring
   command: gpg --list-keys {{ caddy_pgp_key_id }}
   changed_when: gpg_list_keys|failed
   register: gpg_list_keys
   when: caddy_pgp_verify_signatures
+  tags: skip_ansible_lint
   failed_when: "gpg_list_keys|failed and ('gpg: error reading key: No public key' not in gpg_list_keys.stderr and
                                           'gpg: error reading key: public key not found' not in gpg_list_keys.stderr)"
 
@@ -51,18 +54,22 @@
   when: caddy_pgp_verify_signatures and gpg_list_keys.changed
   register: caddy_pgp_key
   changed_when: '"imported" in caddy_pgp_key.stdout'
+  tags: skip_ansible_lint
 
 - name: Download Caddy signature
   get_url: url={{ caddy_sig_url }} dest={{ caddy_home }}/caddy.tar.gz.asc timeout=60 force=yes force_basic_auth={{ caddy_license != 'personal' }}
   when: caddy_pgp_verify_signatures and (caddy_binary_cache.changed or caddy_download.changed)
+  tags: skip_ansible_lint
 
 - name: Verify Caddy signature
   command: gpg --verify {{ caddy_home }}/caddy.tar.gz.asc {{ caddy_home }}/caddy.tar.gz
   when: caddy_pgp_verify_signatures and (caddy_binary_cache.changed or caddy_download.changed)
+  tags: skip_ansible_lint
 
 - name: Extract Caddy
   unarchive: src={{ caddy_home }}/caddy.tar.gz dest={{ caddy_home }} copy=no owner={{ caddy_user }}
   when: caddy_binary_cache.changed
+  tags: skip_ansible_lint
 
 - name: Extract Caddy
   unarchive: src={{ caddy_home }}/caddy.tar.gz dest={{ caddy_home }} creates={{ caddy_home }}/caddy copy=no owner={{ caddy_user }}
