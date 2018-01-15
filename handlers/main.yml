@@ -4,7 +4,7 @@
   service: name=caddy state=restarted
 
 - name: Reload systemd service file
-  systemd:
-    daemon-reload: yes
+  command: systemctl daemon-reload
   notify: Restart Caddy
   ignore_errors: yes
+  tags: skip_ansible_lint

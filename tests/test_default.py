@@ -6,7 +6,7 @@ testinfra_hosts = AnsibleRunner('.molecule/ansible_inventory').get_hosts('all')
 def test_files(host):
     dirs = [
         "/etc/caddy",
-        "/opt/node_exporter"
+        "/var/log/caddy"
     ]
     for dir in dirs:
         d = host.file(dir)
@@ -14,7 +14,7 @@ def test_files(host):
         assert d.is_directory
 
 
-def test_packages(host)
+def test_packages(host):
     pkgs = [
         "git"
     ]
@@ -30,7 +30,7 @@ def test_service(host):
 
 def test_socket(host):
     sockets = [
-        "tcp://localhost:2020"
+        "tcp://127.0.0.1:2020"
     ]
     for socket in sockets:
         s = host.socket(socket)
