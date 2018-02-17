@@ -31,8 +31,10 @@ ExecReload=/bin/kill -USR1 $MAINPID
 
 ; Limit the number of file descriptors; see `man systemd.exec` for more limit settings.
 LimitNOFILE=1048576
-; Unmodified caddy is not expected to use more than that.
-LimitNPROC=64
+{% if caddy_systemd_nproc_limit > 0 %}
+; Limit the number of caddy threads.
+LimitNPROC={{ caddy_systemd_nproc_limit }}
+{% endif %}
 
 ; Use private /tmp and /var/tmp, which are discarded after caddy stops.
 PrivateTmp={{ caddy_systemd_private_tmp }}
