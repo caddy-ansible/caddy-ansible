@@ -7,3 +7,4 @@
   command: systemctl daemon-reload
   notify: Restart Caddy
   ignore_errors: yes
+  tags: skip_ansible_lint

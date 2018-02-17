@@ -3,6 +3,6 @@
   become: yes
   tasks:
     - name: Install curl
-      package: name=curl state=latest
+      package: name=curl state=present
   roles:
     - caddy-ansible
