@@ -65,12 +65,12 @@
 
 - name: Check if Caddy PGP key is already in keyring
   command: gpg --list-keys {{ caddy_pgp_key_id }}
-  changed_when: gpg_list_keys|failed
+  changed_when: gpg_list_keys is failed
   register: gpg_list_keys
   when: caddy_pgp_verify_signatures
   tags: skip_ansible_lint
-  failed_when: "gpg_list_keys|failed and ('gpg: error reading key: No public key' not in gpg_list_keys.stderr and
-                                          'gpg: error reading key: public key not found' not in gpg_list_keys.stderr)"
+  failed_when: "gpg_list_keys is failed and ('gpg: error reading key: No public key' not in gpg_list_keys.stderr and
+                                             'gpg: error reading key: public key not found' not in gpg_list_keys.stderr)"
 
 - name: Download Caddy PGP key
   command: >
