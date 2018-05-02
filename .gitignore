@@ -1,4 +1,4 @@
 .vagrant
 *.retry
 .molecule
-**__pycache__**
+__pycache__/
