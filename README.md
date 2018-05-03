@@ -23,6 +23,12 @@ caddy_config: |
   root /var/www
   git github.com/antoiner77/caddy-ansible
 ```
+
+If you wish to use a template for the config you can do this:
+```
+caddy_config: "{{ lookup('template', 'templates/Caddyfile.j2') }}"
+```
+
 **The type of license to use**<br>
 default:
 ```
