@@ -30,7 +30,7 @@
     caddy_sig_url: "{{ caddy_base_url }}/signature?plugins={{ caddy_features }}&license={{ caddy_license }}"
 
 - name: Download Caddy
-  get_url: url={{ caddy_url }} dest={{ caddy_home }}/caddy.tar.gz force_basic_auth={{ caddy_license != 'personal' }} force=yes
+  get_url: url={{ caddy_url | quote }} dest={{ caddy_home }}/caddy.tar.gz force_basic_auth={{ caddy_license != 'personal' }} force=yes
   when: caddy_releases_cache.changed or caddy_features_cache.changed
   register: caddy_binary_cache
   tags: skip_ansible_lint
