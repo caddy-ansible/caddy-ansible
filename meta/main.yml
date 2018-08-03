@@ -24,15 +24,15 @@ galaxy_info:
       - 7
   - name: Ubuntu
     versions:
-      - precise
-      - trusty
       - xenial
+      - bionic
   - name: Debian
     versions:
       - jessie
+      - stretch
   - name: Fedora
     versions:
-      - 22
+      - 27
   galaxy_tags:
       - system
       - web
