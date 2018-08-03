@@ -1,6 +1,5 @@
 ---
 # defaults file for caddy-ansible
-caddy_arch: amd64
 caddy_user: www-data
 caddy_home: /home/caddy
 caddy_features: http.git

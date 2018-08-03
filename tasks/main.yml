@@ -16,12 +16,12 @@
 
 - name: Build base URL
   set_fact:
-    caddy_base_url: "https://{{ caddy_license_account_id }}:{{ caddy_license_api_key }}@caddyserver.com/download/linux/{{ caddy_arch }}"
+    caddy_base_url: "https://{{ caddy_license_account_id }}:{{ caddy_license_api_key }}@caddyserver.com/download/linux/{{ go_arch_map[ansible_architecture] | default(ansible_architecture) }}"
   when: caddy_license != 'personal'
 
 - name: Build base URL
   set_fact:
-    caddy_base_url: "https://caddyserver.com/download/linux/{{ caddy_arch }}"
+    caddy_base_url: "https://caddyserver.com/download/linux/{{ go_arch_map[ansible_architecture] | default(ansible_architecture) }}"
   when: caddy_license == 'personal'
 
 - name: Build request URLs
@@ -30,13 +30,13 @@
     caddy_sig_url: "{{ caddy_base_url }}/signature?plugins={{ caddy_features }}&license={{ caddy_license }}"
 
 - name: Download Caddy
-  get_url: url={{ caddy_url | quote }} dest={{ caddy_home }}/caddy.tar.gz force_basic_auth={{ caddy_license != 'personal' }} force=yes
+  get_url: url={{ caddy_url | quote }} dest={{ caddy_home }}/caddy.tar.gz force_basic_auth={{ caddy_license != 'personal' }} force=yes timeout=300 retries=3 delay=2
   when: caddy_releases_cache.changed or caddy_features_cache.changed
   register: caddy_binary_cache
   tags: skip_ansible_lint
 
 - name: Download Caddy
-  get_url: url={{ caddy_url}} dest={{ caddy_home }}/caddy.tar.gz force_basic_auth={{ caddy_license != 'personal' }}
+  get_url: url={{ caddy_url}} dest={{ caddy_home }}/caddy.tar.gz force_basic_auth={{ caddy_license != 'personal' }} timeout=300 retries=3 delay=2
   register: caddy_download
   tags: skip_ansible_lint
 
