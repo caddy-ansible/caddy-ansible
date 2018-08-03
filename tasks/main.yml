@@ -45,8 +45,8 @@
     force_basic_auth: "{{ caddy_license != 'personal' }}"
     force: yes
     timeout: 300
-    retries: 3
-    delay: 2
+  retries: 3
+  delay: 2
   when: caddy_releases_cache.changed or caddy_features_cache.changed
   register: caddy_binary_cache
   tags: skip_ansible_lint
@@ -57,8 +57,8 @@
     dest: "{{ caddy_home }}/caddy.tar.gz"
     force_basic_auth: "{{ caddy_license != 'personal' }}"
     timeout: 300
-    retries: 3
-    delay: 2
+  retries: 3
+  delay: 2
   register: caddy_download
   tags: skip_ansible_lint
 
