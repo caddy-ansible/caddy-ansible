@@ -1,5 +1,7 @@
 ---
 
 - name: Install git
-  dnf: name=git state=present
+  dnf:
+    name: git
+    state: present
   when: caddy_features | search('git')
