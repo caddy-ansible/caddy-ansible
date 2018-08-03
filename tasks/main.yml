@@ -2,15 +2,24 @@
 - include: packages-{{ ansible_pkg_mgr }}.yml
 
 - name: Create Caddy user
-  user: name={{ caddy_user }} system=yes createhome=yes home={{ caddy_home }}
+  user:
+    name: "{{ caddy_user }}"
+    system: yes
+    createhome: yes
+    home: "{{ caddy_home }}"
 
 - name: Get all Caddy releases
-  get_url: url=https://api.github.com/repos/mholt/caddy/git/refs/tags dest={{ caddy_home }}/releases.txt force=yes
+  get_url:
+    url: https://api.github.com/repos/mholt/caddy/git/refs/tags
+    dest: "{{ caddy_home }}/releases.txt"
+    force: yes
   when: caddy_update
   register: caddy_releases_cache
 
 - name: Set Caddy features
-  copy: content="{{ caddy_features }}" dest={{ caddy_home }}/features.txt
+  copy:
+    content: "{{ caddy_features }}"
+    dest: "{{ caddy_home }}/features.txt"
   when: caddy_update
   register: caddy_features_cache
 
@@ -30,13 +39,26 @@
     caddy_sig_url: "{{ caddy_base_url }}/signature?plugins={{ caddy_features }}&license={{ caddy_license }}"
 
 - name: Download Caddy
-  get_url: url={{ caddy_url | quote }} dest={{ caddy_home }}/caddy.tar.gz force_basic_auth={{ caddy_license != 'personal' }} force=yes timeout=300 retries=3 delay=2
+  get_url:
+    url: "{{ caddy_url | quote }}"
+    dest: "{{ caddy_home }}/caddy.tar.gz"
+    force_basic_auth: "{{ caddy_license != 'personal' }}"
+    force: yes
+    timeout: 300
+    retries: 3
+    delay: 2
   when: caddy_releases_cache.changed or caddy_features_cache.changed
   register: caddy_binary_cache
   tags: skip_ansible_lint
 
 - name: Download Caddy
-  get_url: url={{ caddy_url}} dest={{ caddy_home }}/caddy.tar.gz force_basic_auth={{ caddy_license != 'personal' }} timeout=300 retries=3 delay=2
+  get_url:
+    url: "{{ caddy_url}}"
+    dest: "{{ caddy_home }}/caddy.tar.gz"
+    force_basic_auth: "{{ caddy_license != 'personal' }}"
+    timeout: 300
+    retries: 3
+    delay: 2
   register: caddy_download
   tags: skip_ansible_lint
 
@@ -50,57 +72,97 @@
                                           'gpg: error reading key: public key not found' not in gpg_list_keys.stderr)"
 
 - name: Download Caddy PGP key
-  command: gpg --keyserver-options timeout={{ caddy_pgp_recv_timeout }} --keyserver {{ caddy_pgp_key_server }} --recv-keys {{ caddy_pgp_key_id }}
+  command: >
+    gpg
+      --keyserver-options timeout={{ caddy_pgp_recv_timeout }}
+      --keyserver {{ caddy_pgp_key_server }}
+      --recv-keys {{ caddy_pgp_key_id }}
   when: caddy_pgp_verify_signatures and gpg_list_keys.changed
   register: caddy_pgp_key
   changed_when: '"imported" in caddy_pgp_key.stdout'
   tags: skip_ansible_lint
 
 - name: Download Caddy signature
-  get_url: url={{ caddy_sig_url }} dest={{ caddy_home }}/caddy.tar.gz.asc timeout=60 force=yes force_basic_auth={{ caddy_license != 'personal' }}
+  get_url:
+    url: "{{ caddy_sig_url }}"
+    dest: "{{ caddy_home }}/caddy.tar.gz.asc"
+    timeout: 60
+    force: yes
+    force_basic_auth: "{{ caddy_license != 'personal' }}"
   when: caddy_pgp_verify_signatures and (caddy_binary_cache.changed or caddy_download.changed)
   tags: skip_ansible_lint
 
 - name: Verify Caddy signature
-  command: gpg --verify {{ caddy_home }}/caddy.tar.gz.asc {{ caddy_home }}/caddy.tar.gz
+  command: >
+    gpg
+      --verify {{ caddy_home }}/caddy.tar.gz.asc
+      {{ caddy_home }}/caddy.tar.gz
   when: caddy_pgp_verify_signatures and (caddy_binary_cache.changed or caddy_download.changed)
   tags: skip_ansible_lint
 
 - name: Extract Caddy
-  unarchive: src={{ caddy_home }}/caddy.tar.gz dest={{ caddy_home }} copy=no owner={{ caddy_user }}
+  unarchive:
+    src: "{{ caddy_home }}/caddy.tar.gz"
+    dest: "{{ caddy_home }}"
+    copy: no
+    owner: "{{ caddy_user }}"
   when: caddy_binary_cache.changed
   tags: skip_ansible_lint
 
 - name: Extract Caddy
-  unarchive: src={{ caddy_home }}/caddy.tar.gz dest={{ caddy_home }} creates={{ caddy_home }}/caddy copy=no owner={{ caddy_user }}
+  unarchive:
+   src: "{{ caddy_home }}/caddy.tar.gz"
+   dest: "{{ caddy_home }}"
+   creates: "{{ caddy_home }}/caddy"
+   copy: no
+   owner: "{{ caddy_user }}"
 
 - name: Determine Caddy binary path
   set_fact:
     caddy_bin: "{{ caddy_bin_dir }}/caddy"
 
 - name: Copy Caddy Binary
-  copy: src={{ caddy_home }}/caddy dest={{ caddy_bin }} mode=0755 remote_src=True
+  copy:
+    src: "{{ caddy_home }}/caddy"
+    dest: "{{ caddy_bin }}"
+    mode: 0755
+    remote_src: true
   notify: Restart Caddy
 
 - name: Create directories
-  file: path={{ item }} state=directory owner={{ caddy_user }} mode='0770'
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ caddy_user }}"
+    mode: 0770
   with_items:
     - "{{ caddy_conf_dir }}"
     - "{{ caddy_certs_dir }}"
 
 - name: Create log directory
-  file: path={{ caddy_log_dir }} state=directory owner={{ caddy_user }} mode='0775'
+  file:
+    path: "{{ caddy_log_dir }}"
+    state: directory
+    owner: "{{ caddy_user }}"
+    mode: 0775
 
 - name: Create Caddyfile
-  copy: content="{{ caddy_config }}" dest="{{ caddy_conf_dir }}/Caddyfile" owner={{ caddy_user }}
+  copy:
+    content: "{{ caddy_config }}"
+    dest: "{{ caddy_conf_dir }}/Caddyfile"
+    owner: "{{ caddy_user }}"
   notify: Restart Caddy
 
 - name: Check if systemd is running
-  stat: path=/run/systemd/system
+  stat:
+    path: /run/systemd/system
   register: systemd
 
 - name: Upstart service
-  template: src={{ item }} dest=/etc/init/caddy.conf mode=0644
+  template:
+    src: "{{ item }}"
+    dest: /etc/init/caddy.conf
+    mode: 0644
   when: not systemd.stat.exists
   with_first_found:
     - "caddy.conf.{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}"
@@ -109,7 +171,10 @@
   notify: Restart Caddy
 
 - name: Systemd service
-  template: src=caddy.service dest=/etc/systemd/system/caddy.service mode=0644
+  template:
+    src: caddy.service
+    dest: /etc/systemd/system/caddy.service
+    mode: 0644
   when: systemd.stat.exists
   notify: Reload systemd service file
 
@@ -121,4 +186,7 @@
   when: caddy_setcap
 
 - name: Start Caddy service
-  service: name=caddy state=started enabled=yes
+  service:
+    name: caddy
+    state: started
+    enabled: yes
