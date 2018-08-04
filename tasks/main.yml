@@ -127,7 +127,7 @@
     dest: "{{ caddy_bin }}"
     mode: 0755
     remote_src: true
-  notify: Restart Caddy
+  notify: restart caddy
 
 - name: Create directories
   file:
@@ -151,32 +151,16 @@
     content: "{{ caddy_config }}"
     dest: "{{ caddy_conf_dir }}/Caddyfile"
     owner: "{{ caddy_user }}"
-  notify: Restart Caddy
-
-- name: Check if systemd is running
-  stat:
-    path: /run/systemd/system
-  register: systemd
-
-- name: Upstart service
-  template:
-    src: "{{ item }}"
-    dest: /etc/init/caddy.conf
-    mode: 0644
-  when: not systemd.stat.exists
-  with_first_found:
-    - "caddy.conf.{{ ansible_distribution | lower }}-{{ ansible_distribution_major_version }}"
-    - "caddy.conf.{{ ansible_distribution | lower }}-{{ ansible_distribution_version }}"
-    - "caddy.conf"
-  notify: Restart Caddy
+  notify: reload caddy
 
 - name: Systemd service
   template:
     src: caddy.service
     dest: /etc/systemd/system/caddy.service
+    owner: root
+    group: root
     mode: 0644
-  when: systemd.stat.exists
-  notify: Reload systemd service file
+  notify: restart caddy
 
 - name: Set capability on the binary file to be able to bind to TCP port <1024
   capabilities:
@@ -186,7 +170,7 @@
   when: caddy_setcap
 
 - name: Start Caddy service
-  service:
+  systemd:
     name: caddy
     state: started
-    enabled: yes
+    enabled: true
