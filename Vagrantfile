@@ -28,7 +28,7 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision "ansible" do |ansible|
-      ansible.playbook = 'tests/test.yml'
+    ansible.playbook = 'tests/playbook.yml'
   end
 
   $script = <<SCRIPT
@@ -43,6 +43,7 @@ Vagrant.configure(2) do |config|
     *)       echo "$http_code | Unknown http response code!" >&2 ;;
   esac
 SCRIPT
+
   # Fix 'stdin: is not a tty' error
   config.ssh.pty = true
   config.vm.provision :shell, inline: $script
