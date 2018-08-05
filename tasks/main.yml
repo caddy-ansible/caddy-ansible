@@ -40,7 +40,7 @@
 
 - name: Download Caddy
   get_url:
-    url: "{{ caddy_url | quote }}"
+    url: "{{ caddy_url }}"
     dest: "{{ caddy_home }}/caddy.tar.gz"
     force_basic_auth: "{{ caddy_license != 'personal' }}"
     force: yes
@@ -53,7 +53,7 @@
 
 - name: Download Caddy
   get_url:
-    url: "{{ caddy_url}}"
+    url: "{{ caddy_url }}"
     dest: "{{ caddy_home }}/caddy.tar.gz"
     force_basic_auth: "{{ caddy_license != 'personal' }}"
     timeout: 300
