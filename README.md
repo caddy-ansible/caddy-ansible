@@ -86,7 +86,7 @@ RHEL/CentOS has no release that supports systemd capability controls at this tim
 
 **Add additional environment variables**<br>
 
-Add environment variables to the systemd/upstart script
+Add environment variables to the systemd script
 
 ```
 caddy_environment_variables:
@@ -150,10 +150,10 @@ Example with Cloudflare DNS for TLS
 Debugging
 ---------
 If the service fails to start you can figure out why by looking at the output of Caddy.<br>
-**Upstart (ubuntu, debian wheezy, centos/rhel 6)**<br>
-`tail /var/log/upstart/caddy.log`<br>
-**Systemd (debian jessie, centos/rhel 7)**<br>
-`systemctl status caddy -l`
+
+```console
+systemctl status caddy -l
+```
 
 If something doesn't seem right, open an issue!
 
