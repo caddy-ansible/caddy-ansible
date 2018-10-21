@@ -3,28 +3,20 @@
 
 Vagrant.configure(2) do |config|
 
-  config.vm.define "jessie" do |jessie|
-    jessie.vm.box = "debian/jessie64"
+  config.vm.define "stretch" do |stretch|
+    stretch.vm.box = "bento/debian-9"
   end
 
-  config.vm.define "precise" do |precise|
-    precise.vm.box = "bento/ubuntu-12.04"
-  end
-
-  config.vm.define "trusty" do |trusty|
-    trusty.vm.box = "bento/ubuntu-14.04"
-  end
-
-  config.vm.define "xenial" do |xenial|
-    xenial.vm.box = "bento/ubuntu-16.04"
+  config.vm.define "bionic" do |bionic|
+    bionic.vm.box = "bento/ubuntu-18.04"
   end
 
   config.vm.define "centos7" do |centos7|
-    centos7.vm.box = "bento/centos-7.3"
+    centos7.vm.box = "bento/centos-7"
   end
 
-  config.vm.define "fedora22" do |fedora22|
-    fedora22.vm.box = "bento/fedora-22"
+  config.vm.define "fedora22" do |fedora28|
+    fedora28.vm.box = "bento/fedora-28"
   end
 
   config.vm.provision "ansible" do |ansible|
