@@ -26,7 +26,7 @@ Environment=CADDYPATH={{ caddy_certs_dir }}
 
 
 ; Always set "-root" to something safe in case it gets forgotten in the Caddyfile.
-ExecStart={{ caddy_bin_dir }}/caddy -log {{ caddy_log_file }} -http2={{ caddy_http2_enabled }} -agree=true -conf={{ caddy_conf_dir }}/Caddyfile -root=/var/tmp
+ExecStart={{ caddy_bin_dir }}/caddy -log {{ caddy_log_file }} -http2={{ caddy_http2_enabled }} -agree=true -conf={{ caddy_conf_dir }}/Caddyfile -root=/var/tmp {{ caddy_additional_args }}
 ExecReload=/bin/kill -USR1 $MAINPID
 
 ; Limit the number of file descriptors; see `man systemd.exec` for more limit settings.
