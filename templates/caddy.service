@@ -1,5 +1,4 @@
-; {{ ansible_managed }}
-;
+{{ ansible_managed | comment(decoration="; ") }}
 ; source: https://github.com/mholt/caddy/blob/master/dist/init/linux-systemd/caddy.service
 ; version: 6be0386
 ; changes: Set variables via Ansible
