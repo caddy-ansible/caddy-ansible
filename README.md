@@ -45,7 +45,7 @@ default:
 caddy_update: yes
 ```
 **Features that can be added to core:** http.authz, http.awses, http.awslambda,
-http.cache, http.cgi, http.cors, http.datadog, http.expires, http.filemanager,
+http.cache, http.cgi, http.cors, http.datadog, http.expires, http.filebrowser,
 http.filter, http.forwardproxy, http.git, http.gopkg, http.grpc, http.hugo,
 http.ipfilter, http.jekyll, http.jwt, http.locale, http.login, http.mailout,
 http.minify, http.nobots, http.prometheus, http.proxyprotocol, http.ratelimit,
