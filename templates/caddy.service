@@ -10,11 +10,17 @@ After=network-online.target
 {% if caddy_systemd_network_dependency == true %}
 Wants=network-online.target systemd-networkd-wait-online.service
 {% endif %}
+{% if caddy_systemd_version | int >= 230 %}
+StartLimitIntervalSec={{ caddy_systemd_restart_startlimitinterval }}
+StartLimitBurst={{ caddy_systemd_restart_startlimitburst }}
+{% endif %}
 
 [Service]
 Restart={{ caddy_systemd_restart }}
+{% if caddy_systemd_version | int < 230 %}
 StartLimitInterval={{ caddy_systemd_restart_startlimitinterval }}
-StartLimitBurst= {{ caddy_systemd_restart_startlimitburst }}
+StartLimitBurst={{ caddy_systemd_restart_startlimitburst }}
+{% endif %}
 
 ; User and group the process will run as.
 User={{ caddy_user }}

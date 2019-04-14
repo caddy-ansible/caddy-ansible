@@ -1,4 +1,5 @@
 ---
+- include: preflight.yml
 - include: packages-{{ ansible_pkg_mgr }}.yml
 
 - name: Create Caddy user
