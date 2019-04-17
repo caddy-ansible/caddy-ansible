@@ -26,12 +26,12 @@
 
 - name: Build base URL
   set_fact:
-    caddy_base_url: "https://{{ caddy_license_account_id }}:{{ caddy_license_api_key }}@caddyserver.com/download/linux/{{ go_arch_map[ansible_architecture] | default(ansible_architecture) }}"
+    caddy_base_url: "https://{{ caddy_license_account_id }}:{{ caddy_license_api_key }}@caddyserver.com/download/linux/{{ go_arch }}"
   when: caddy_license != 'personal'
 
 - name: Build base URL
   set_fact:
-    caddy_base_url: "https://caddyserver.com/download/linux/{{ go_arch_map[ansible_architecture] | default(ansible_architecture) }}"
+    caddy_base_url: "https://caddyserver.com/download/linux/{{ go_arch }}"
   when: caddy_license == 'personal'
 
 - name: Build request URLs
