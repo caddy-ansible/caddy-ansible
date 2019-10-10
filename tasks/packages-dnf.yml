@@ -4,4 +4,4 @@
   dnf:
     name: git
     state: present
-  when: caddy_features | search('git')
+  when: caddy_features is search('git')
