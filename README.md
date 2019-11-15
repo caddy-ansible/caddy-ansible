@@ -16,6 +16,7 @@
   * [Use systemd capabilities controls](#use-systemd-capabilities-controls)
   * [Add additional environment variables](#add-additional-environment-variables)
   * [Use additional CLI arguments](#use-additional-cli-arguments)
+  * [Use a GitHub OAuth token to request the list of caddy releases](#use-a-github-oauth-token-to-request-the-list-of-caddy-releases)
 - [Example Playbooks](#example-playbooks)
 - [Debugging](#debugging)
 - [Contributing](#contributing)
@@ -161,6 +162,16 @@ Example for LetsEncrypt staging:
 
 ```yaml
 caddy_additional_args: "-ca https://acme-staging.api.letsencrypt.org/directory"
+```
+
+### Use a GitHub OAuth token to request the list of caddy releases
+
+This role uses the GitHub releases list to check when a new version is available. [GitHub has some fairly agressive rate-limiting](https://developer.github.com/v3/#rate-limiting) which can cause failures. You can set your GitHub token to increase the limits for yourself when running the role (e.g. if deploying many servers behind a NAT or running this role repeatedly as part of a CI process).
+
+default:
+
+```yaml
+caddy_github_token: ""
 ```
 
 ## Example Playbooks

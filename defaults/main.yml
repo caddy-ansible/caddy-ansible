@@ -6,6 +6,7 @@ caddy_features: http.git
 caddy_update: true
 caddy_bin_dir: /usr/local/bin
 caddy_conf_dir: /etc/caddy
+caddy_github_token: ""
 caddy_license: personal
 caddy_license_account_id:
 caddy_license_api_key:

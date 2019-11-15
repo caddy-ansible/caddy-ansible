@@ -9,11 +9,17 @@
     createhome: true
     home: "{{ caddy_home }}"
 
+- name: Build headers to use when making requests to github
+  set_fact:
+    caddy_github_headers: "{{ caddy_github_headers | combine({'Authorisation': 'token ' + caddy_github_token}) }}"
+  when: caddy_github_token != ""
+
 - name: Get all Caddy releases
   get_url:
     url: https://api.github.com/repos/mholt/caddy/git/refs/tags
     dest: "{{ caddy_home }}/releases.txt"
     force: true
+    headers: '{{ caddy_github_headers }}'
   retries: 3
   delay: 2
   when: caddy_update
