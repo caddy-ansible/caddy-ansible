@@ -12,7 +12,7 @@
 - name: Build headers to use when making requests to github
   set_fact:
     caddy_github_headers: "{{ caddy_github_headers | combine({'Authorisation': 'token ' + caddy_github_token}) }}"
-  when: caddy_github_token != ""
+  when: caddy_github_token | length > 0
 
 - name: Get all Caddy releases
   get_url:
