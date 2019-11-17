@@ -1,20 +1,18 @@
+---
 sudo: required
 language: python
-python: 2.7
 cache: pip
 services:
   - docker
 env:
-  - ANSIBLE=2.6
-  - ANSIBLE=2.7
+  matrix:
+    - MOLECULE_DISTRO: centos7
+    - MOLECULE_DISTRO: fedora29
+    - MOLECULE_DISTRO: ubuntu1804
+    - MOLECULE_DISTRO: debian9
 install:
-  - pip install ansible==${ANSIBLE} ansible-lint>=4.0.0 molecule==1.25.0 docker git-semver testinfra>=1.7.0
-before_script:
-  - ansible-lint tests/playbook.yml
+  - pip install molecule yamllint ansible-lint docker pytest testinfra
 script:
   - molecule test
-branches:
-  only:
-    - master
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
