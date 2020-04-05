@@ -2,37 +2,25 @@
 galaxy_info:
   author: antoiner77
   description: Installs and configures a Caddy webserver
-
-  # Some suggested licenses:
-  # - BSD (default)
-  # - MIT
-  # - GPLv2
-  # - GPLv3
-  # - Apache
-  # - CC-BY
   license: MIT
-
-  min_ansible_version: 1.6
-
-  # Below are all platforms currently available. Just uncomment
-  # the ones that apply to your role. If you don't see your
-  # platform on this list, let us know and we'll get it added!
-  #
+  min_ansible_version: 2.0
   platforms:
     - name: EL
       versions:
         - 7
+        - 8
     - name: Ubuntu
       versions:
         - xenial
         - bionic
+        - focal
     - name: Debian
       versions:
-        - jessie
         - stretch
+        - buster
     - name: Fedora
       versions:
-        - 27
+        - 29
   galaxy_tags:
     - system
     - web
