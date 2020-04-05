@@ -1,11 +1,6 @@
 ---
 - name: Converge
   hosts: all
-  vars:
-    # Debian 10 doesn't play nice with this being set to true. Not really seeing
-    # much value in enabling it for these tests (given that this mainly applies on
-    # boot & the containers are never rebooted) so just disable it everywhere.
-    caddy_systemd_network_dependency: false
   roles:
     - role: caddy-ansible
   tasks:
