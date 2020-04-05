@@ -19,21 +19,21 @@ galaxy_info:
   # platform on this list, let us know and we'll get it added!
   #
   platforms:
-  - name: EL
-    versions:
-      - 7
-  - name: Ubuntu
-    versions:
-      - xenial
-      - bionic
-  - name: Debian
-    versions:
-      - jessie
-      - stretch
-  - name: Fedora
-    versions:
-      - 27
+    - name: EL
+      versions:
+        - 7
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
+    - name: Fedora
+      versions:
+        - 27
   galaxy_tags:
-      - system
-      - web
+    - system
+    - web
 dependencies: []

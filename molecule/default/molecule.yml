@@ -5,9 +5,7 @@ driver:
   name: docker
 lint: |
   set -e
-  ansible-lint
-lint: |
-  set -e
+  yamllint .
   ansible-lint
 platforms:
   - name: instance
@@ -25,4 +23,4 @@ scenario:
   name: default
 verifier:
   name: testinfra
-  enabled: True
+  enabled: true
