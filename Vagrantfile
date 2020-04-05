@@ -2,29 +2,20 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-
-  config.vm.define "jessie" do |jessie|
-    jessie.vm.box = "debian/jessie64"
+  config.vm.define "buster" do |buster|
+    buster.vm.box = "debian/buster64"
   end
 
-  config.vm.define "precise" do |precise|
-    precise.vm.box = "bento/ubuntu-12.04"
-  end
-
-  config.vm.define "trusty" do |trusty|
-    trusty.vm.box = "bento/ubuntu-14.04"
-  end
-
-  config.vm.define "xenial" do |xenial|
-    xenial.vm.box = "bento/ubuntu-16.04"
+  config.vm.define "bionic" do |bionic|
+    bionic.vm.box = "bento/ubuntu-18.04"
   end
 
   config.vm.define "centos7" do |centos7|
     centos7.vm.box = "bento/centos-7.3"
   end
 
-  config.vm.define "fedora22" do |fedora22|
-    fedora22.vm.box = "bento/fedora-22"
+  config.vm.define "fedora29" do |fedora29|
+    fedora29.vm.box = "bento/fedora-29"
   end
 
   config.vm.provision "ansible" do |ansible|
@@ -36,6 +27,7 @@ Vagrant.configure(2) do |config|
   while ! curl -Is localhost:2020 -o /dev/null; do
     sleep 1 && echo -n .
   done
+  echo
   http_code=$(curl --silent --head --output /dev/null -w '%{http_code}' localhost:2020)
   case $http_code in
     200|404) echo "$http_code | Server running" ;;
