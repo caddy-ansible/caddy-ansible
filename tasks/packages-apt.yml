@@ -11,6 +11,11 @@
     state: present
   when: caddy_features is search('git')
 
+- name: Install procps
+  apt:
+    name: procps
+    state: present
+
 - name: Install libcap
   apt:
     name: libcap2-bin
