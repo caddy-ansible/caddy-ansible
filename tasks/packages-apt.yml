@@ -11,6 +11,7 @@
     state: present
   when: caddy_features is search('git')
 
+# This is required because it provides the /bin/kill binary used in the service file
 - name: Install procps
   apt:
     name: procps

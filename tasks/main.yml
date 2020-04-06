@@ -29,8 +29,6 @@
 - name: Build base URL
   set_fact:
     caddy_base_url: "https://{{ caddy_auth_info }}@caddyserver.com/download/linux/{{ go_arch }}"
-  vars:
-    caddy_auth_info: "{{ caddy_license_account_id }}:{{ caddy_license_api_key }}"
   when: caddy_license != 'personal'
 
 - name: Build base URL
@@ -73,9 +71,10 @@
   register: gpg_list_keys
   when: caddy_pgp_verify_signatures
   tags: skip_ansible_lint
-  failed_when: "gpg_list_keys is failed and
-                ('gpg: error reading key: No public key' not in gpg_list_keys.stderr and
-                 'gpg: error reading key: public key not found' not in gpg_list_keys.stderr)"
+  failed_when:
+    - "gpg_list_keys is failed"
+    - "'gpg: error reading key: No public key' not in gpg_list_keys.stderr"
+    - "'gpg: error reading key: public key not found' not in gpg_list_keys.stderr"
 
 - name: Download Caddy PGP key
   command: >

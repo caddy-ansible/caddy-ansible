@@ -14,7 +14,7 @@ env:
     - MOLECULE_DISTRO: debian9
     - MOLECULE_DISTRO: debian10
 install:
-  - pip install molecule yamllint ansible-lint docker pytest testinfra
+  - pip install ansible molecule yamllint ansible-lint docker pytest testinfra
 script:
   - molecule test
 notifications:

@@ -8,3 +8,5 @@ go_arch_map:
   armv6l: 'arm6'
 
 go_arch: "{{ go_arch_map[ansible_architecture] | default(ansible_architecture) }}"
+
+caddy_auth_info: "{{ caddy_license_account_id }}:{{ caddy_license_api_key }}"
