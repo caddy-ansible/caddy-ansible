@@ -1,0 +1,16 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: caddy-ansible
+  tasks:
+    - name: Ensure ss is installed (for testinfra)
+      yum:
+        name: iproute
+        state: present
+      when: ansible_distribution in ['CentOS', 'Red Hat Enterprise Linux', 'Fedora']
+    - name: Ensure ss is installed (for testinfra)
+      package:
+        name: iproute2
+        state: present
+      when: ansible_distribution not in ['CentOS', 'Red Hat Enterprise Linux', 'Fedora']
