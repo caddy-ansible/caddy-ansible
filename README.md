@@ -78,7 +78,7 @@ caddy_license_api_key: YOUR_API_KEY
 default:
 
 ```yaml
-caddy_update: yes
+caddy_update: true
 ```
 
 ### Additional Available Packages
@@ -98,7 +98,7 @@ This allows Caddy to open a low port (under 1024 - e.g. 80, 443).
 default:
 
 ```yaml
-caddy_setcap: yes
+caddy_setcap: true
 ```
 
 ### Verify the PGP signature on download?
@@ -106,7 +106,7 @@ caddy_setcap: yes
 default:
 
 ```yaml
-caddy_pgp_verify_signatures: no
+caddy_pgp_verify_signatures: false
 ```
 
 ### Use systemd capabilities controls
@@ -114,7 +114,7 @@ caddy_pgp_verify_signatures: no
 default:
 
 ```yaml
-caddy_systemd_capabilities_enabled: False
+caddy_systemd_capabilities_enabled: false
 caddy_systemd_capabilities: "CAP_NET_BIND_SERVICE"
 ```
 
@@ -200,7 +200,6 @@ Example with Cloudflare DNS for TLS:
         CLOUDFLARE_API_KEY: 1234567890
       caddy_config: |
         yourcloudflareddomain.com {
-
             tls {
                 dns cloudflare
             }
