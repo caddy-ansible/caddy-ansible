@@ -29,7 +29,7 @@ Group={{ caddy_user }}
 ; Letsencrypt-issued certificates will be written to this directory.
 Environment=CADDYPATH={{ caddy_certs_dir }}
 
-ExecStart="{{ caddy_bin_dir }}/caddy" run --environ --config "{{ caddy_conf_dir }}/Caddyfile"
+ExecStart="{{ caddy_bin_dir }}/caddy" run --environ --config "{{ caddy_conf_dir }}/Caddyfile" {{ caddy_additional_args }}
 ExecReload="{{ caddy_bin_dir }}/caddy" reload --config "{{ caddy_conf_dir }}/Caddyfile"
 
 ; Limit the number of file descriptors; see `man systemd.exec` for more limit settings.
