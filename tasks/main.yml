@@ -36,7 +36,9 @@
   set_fact:
     caddy_bin_name: "caddy_{{ caddy_os }}_{{ go_arch }}"
     caddy_common_args: "os={{ caddy_os }}&arch={{ go_arch }}&license={{ caddy_license }}\
-                        {% for pkg in caddy_packages %}{% if loop.first %}&{% endif %}p={{ pkg }}{% if not loop.last %},{% endif %}{% endfor %}"
+                        {% for pkg in caddy_packages %}\
+                        {% if loop.first %}&{% endif %}p={{ pkg }}{% if not loop.last %},{% endif %}\
+                        {% endfor %}"
 
 - name: Build base URL
   set_fact:

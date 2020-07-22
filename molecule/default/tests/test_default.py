@@ -18,9 +18,7 @@ def test_files(host):
 
 
 def test_packages(host):
-    pkgs = [
-        "git"
-    ]
+    pkgs = []
     for p in pkgs:
         assert host.package(p).is_installed
 
