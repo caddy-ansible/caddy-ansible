@@ -8,9 +8,10 @@
 - [Dependencies](#dependencies)
 - [Role Variables](#role-variables)
   * [The Caddyfile](#the-caddyfile)
+  * [The OS to download caddy for](#the-os-to-download-caddy-for)
   * [The type of license to use](#the-type-of-license-to-use)
   * [Auto update Caddy?](#auto-update-caddy)
-  * [Features that can be added to core](#features-that-can-be-added-to-core)
+  * [Additional Available Features](#additional-available-features)
   * [Use `setcap`?](#use-setcap)
   * [Verify the PGP signature on download?](#verify-the-pgp-signature-on-download)
   * [Use systemd capabilities controls](#use-systemd-capabilities-controls)
@@ -39,17 +40,22 @@ default:
 
 ```yaml
 caddy_config: |
-  localhost:2020
-  gzip
-  # tls email@example.com
-  root /var/www
-  git github.com/antoiner77/caddy-ansible
+  http://localhost:2020
+  respond "Hello, world!"
 ```
 
 If you wish to use a template for the config you can do this:
 
 ```yaml
 caddy_config: "{{ lookup('template', 'templates/Caddyfile.j2') }}"
+```
+
+### The OS to download caddy for
+
+default:
+
+```yaml
+caddy_os: linux
 ```
 
 ### The type of license to use
@@ -75,24 +81,14 @@ default:
 caddy_update: yes
 ```
 
-### Features that can be added to core
+### Additional Available Packages
 
-http.authz, http.awses, http.awslambda, http.cache, http.cgi, http.cors,
-http.datadog, http.expires, http.filebrowser, http.filter, http.forwardproxy,
-http.git, http.gopkg, http.grpc, http.hugo, http.ipfilter, http.jekyll, http.jwt,
-http.locale, http.login, http.mailout, http.minify, http.nobots, http.prometheus,
-http.proxyprotocol, http.ratelimit, http.realip, http.reauth, http.restic,
-http.upload, http.webdav, dns, net, hook.service, tls.dns.azure, tls.dns.cloudflare,
-tls.dns.digitalocean, tls.dns.dnsimple, tls.dns.dnspod, tls.dns.dyn, tls.dns.exoscale,
-tls.dns.gandi, tls.dns.googlecloud, tls.dns.linode, tls.dns.namecheap, tls.dns.ovh,
-tls.dns.rackspace, tls.dns.rfc2136, tls.dns.route53, tls.dns.vultr
-
-Changing this variable will reinstall Caddy with the new features if `caddy_update` is enabled.
+Changing this variable will reinstall Caddy with the new packages if `caddy_update` is enabled. Check https://caddyserver.com/download for available packages.
 
 default:
 
 ```yaml
-caddy_features: http.git
+caddy_packages: []
 ```
 
 ### Use `setcap`?

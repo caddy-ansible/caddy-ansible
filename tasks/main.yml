@@ -27,30 +27,36 @@
 
 - name: Set Caddy features
   copy:
-    content: "{{ caddy_features }}"
+    content: "{{ ','.join(caddy_packages) }}"
     dest: "{{ caddy_home }}/features.txt"
   when: caddy_update
   register: caddy_features_cache
 
+- name: Set some common parameters
+  set_fact:
+    caddy_bin_name: "caddy_{{ caddy_os }}_{{ go_arch }}"
+    caddy_common_args: "os={{ caddy_os }}&arch={{ go_arch }}&license={{ caddy_license }}\
+                        {% for pkg in caddy_packages %}{% if loop.first %}&{% endif %}p={{ pkg }}{% if not loop.last %},{% endif %}{% endfor %}"
+
 - name: Build base URL
   set_fact:
-    caddy_base_url: "https://{{ caddy_auth_info }}@caddyserver.com/download/linux/{{ go_arch }}"
+    caddy_base_url: "https://{{ caddy_auth_info }}@caddyserver.com/api/download"
   when: caddy_license != 'personal'
 
 - name: Build base URL
   set_fact:
-    caddy_base_url: "https://caddyserver.com/download/linux/{{ go_arch }}"
+    caddy_base_url: "https://caddyserver.com/api/download"
   when: caddy_license == 'personal'
 
 - name: Build request URLs
   set_fact:
-    caddy_url: "{{ caddy_base_url }}?plugins={{ caddy_features }}&license={{ caddy_license }}"
-    caddy_sig_url: "{{ caddy_base_url }}/signature?plugins={{ caddy_features }}&license={{ caddy_license }}"
+    caddy_url: "{{ caddy_base_url }}?{{ caddy_common_args }}"
+    caddy_sig_url: "{{ caddy_base_url }}/signature?{{ caddy_common_args }}"
 
 - name: Download Caddy
   get_url:
     url: "{{ caddy_url }}"
-    dest: "{{ caddy_home }}/caddy.tar.gz"
+    dest: "{{ caddy_home }}/{{ caddy_bin_name }}"
     force_basic_auth: "{{ caddy_license != 'personal' }}"
     force: true
     timeout: 300
@@ -63,7 +69,7 @@
 - name: Download Caddy
   get_url:
     url: "{{ caddy_url }}"
-    dest: "{{ caddy_home }}/caddy.tar.gz"
+    dest: "{{ caddy_home }}/{{ caddy_bin_name }}"
     force_basic_auth: "{{ caddy_license != 'personal' }}"
     timeout: 300
   retries: 3
@@ -93,40 +99,23 @@
   changed_when: '"imported" in caddy_pgp_key.stdout'
   tags: skip_ansible_lint
 
-- name: Download Caddy signature
-  get_url:
-    url: "{{ caddy_sig_url }}"
-    dest: "{{ caddy_home }}/caddy.tar.gz.asc"
-    timeout: 60
-    force: true
-    force_basic_auth: "{{ caddy_license != 'personal' }}"
-  when: caddy_pgp_verify_signatures and (caddy_binary_cache.changed or caddy_download.changed)
-  tags: skip_ansible_lint
+# - name: Download Caddy signature
+#   get_url:
+#     url: "{{ caddy_sig_url }}"
+#     dest: "{{ caddy_home }}/caddy.tar.gz.asc"
+#     timeout: 60
+#     force: true
+#     force_basic_auth: "{{ caddy_license != 'personal' }}"
+#   when: caddy_pgp_verify_signatures and (caddy_binary_cache.changed or caddy_download.changed)
+#   tags: skip_ansible_lint
 
-- name: Verify Caddy signature
-  command: >
-    gpg
-      --verify {{ caddy_home }}/caddy.tar.gz.asc
-      {{ caddy_home }}/caddy.tar.gz
-  when: caddy_pgp_verify_signatures and (caddy_binary_cache.changed or caddy_download.changed)
-  tags: skip_ansible_lint
-
-- name: Extract Caddy
-  unarchive:
-    src: "{{ caddy_home }}/caddy.tar.gz"
-    dest: "{{ caddy_home }}"
-    copy: false
-    owner: "{{ caddy_user }}"
-  when: caddy_binary_cache.changed
-  tags: skip_ansible_lint
-
-- name: Extract Caddy
-  unarchive:
-    src: "{{ caddy_home }}/caddy.tar.gz"
-    dest: "{{ caddy_home }}"
-    creates: "{{ caddy_home }}/caddy"
-    copy: false
-    owner: "{{ caddy_user }}"
+# - name: Verify Caddy signature
+#   command: >
+#     gpg
+#       --verify {{ caddy_home }}/caddy.tar.gz.asc
+#       {{ caddy_home }}/caddy.tar.gz
+#   when: caddy_pgp_verify_signatures and (caddy_binary_cache.changed or caddy_download.changed)
+#   tags: skip_ansible_lint
 
 - name: Determine Caddy binary path
   set_fact:
@@ -134,11 +123,12 @@
 
 - name: Copy Caddy Binary
   copy:
-    src: "{{ caddy_home }}/caddy"
+    src: "{{ caddy_home }}/{{ caddy_bin_name }}"
     dest: "{{ caddy_bin }}"
     mode: 0755
     remote_src: true
-  notify: restart caddy
+  notify:
+    - Restart caddy
 
 - name: Create directories
   file:
@@ -162,7 +152,8 @@
     content: "{{ caddy_config }}"
     dest: "{{ caddy_conf_dir }}/Caddyfile"
     owner: "{{ caddy_user }}"
-  notify: reload caddy
+  notify:
+    - Reload caddy
 
 - name: Systemd service
   template:
@@ -171,14 +162,18 @@
     owner: root
     group: root
     mode: 0644
-  notify: restart caddy
+  notify:
+    - Restart caddy
 
 - name: Set capability on the binary file to be able to bind to TCP port <1024
   capabilities:
     path: "{{ caddy_bin }}"
-    capability: cap_net_bind_service+ep
+    capability: cap_net_bind_service+eip
     state: present
   when: caddy_setcap
+
+- name: Ensue caddy service is up-to-date before starting it
+  meta: flush_handlers
 
 - name: Start Caddy service
   systemd:

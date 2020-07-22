@@ -10,12 +10,16 @@ Vagrant.configure(2) do |config|
     bionic.vm.box = "bento/ubuntu-18.04"
   end
 
-  config.vm.define "centos7" do |centos7|
-    centos7.vm.box = "bento/centos-7.3"
+  config.vm.define "focal" do |focal|
+    focal.vm.box = "bento/ubuntu-20.04"
   end
 
-  config.vm.define "fedora29" do |fedora29|
-    fedora29.vm.box = "bento/fedora-29"
+  config.vm.define "centos7" do |centos7|
+    centos7.vm.box = "bento/centos-7.6"
+  end
+
+  config.vm.define "fedora32" do |fedora32|
+    fedora32.vm.box = "bento/fedora-32"
   end
 
   config.vm.provision "ansible" do |ansible|
@@ -31,8 +35,8 @@ Vagrant.configure(2) do |config|
   http_code=$(curl --silent --head --output /dev/null -w '%{http_code}' localhost:2020)
   case $http_code in
     200|404) echo "$http_code | Server running" ;;
-    000)     echo "$http_code | Server not accessible!" >&2 ;;
-    *)       echo "$http_code | Unknown http response code!" >&2 ;;
+    000)     echo "$http_code | Server not accessible!" >&2 ; exit 1 ;;
+    *)       echo "$http_code | Unknown http response code!" >&2 ; exit 1 ;;
   esac
 SCRIPT
 

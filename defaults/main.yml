@@ -2,7 +2,7 @@
 # defaults file for caddy-ansible
 caddy_user: www-data
 caddy_home: /home/caddy
-caddy_features: http.git
+caddy_packages: []
 caddy_update: true
 caddy_bin_dir: /usr/local/bin
 caddy_conf_dir: /etc/caddy
@@ -34,9 +34,7 @@ caddy_pgp_key_server: hkp://keyserver.ubuntu.com
 caddy_pgp_recv_timeout: 60
 caddy_pgp_verify_signatures: false
 caddy_config: |
-  localhost:2020
-  gzip
-  # tls email@example.com
-  # root /var/www
-  git github.com/antoiner77/caddy-ansible
+  http://localhost:2020
+  respond "Hello, world!"
 caddy_environment_variables: {}
+caddy_os: linux

@@ -1,7 +1,1 @@
 ---
-
-- name: Install git
-  yum:
-    name: git
-    state: present
-  when: caddy_features is search('git')
