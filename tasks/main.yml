@@ -28,17 +28,17 @@
 
 - name: Build base URL
   set_fact:
-    caddy_base_url: "https://{{ caddy_auth_info }}@caddyserver.com/download/linux/{{ go_arch }}"
+    caddy_base_url: "https://{{ caddy_auth_info }}@caddyserver.com/api/download"
   when: caddy_license != 'personal'
 
 - name: Build base URL
   set_fact:
-    caddy_base_url: "https://caddyserver.com/download/linux/{{ go_arch }}"
+    caddy_base_url: "https://caddyserver.com/api/download"
   when: caddy_license == 'personal'
 
 - name: Build request URLs
   set_fact:
-    caddy_url: "{{ caddy_base_url }}?plugins={{ caddy_features }}&license={{ caddy_license }}"
+    caddy_url: "{{ caddy_base_url }}?os=linux&arch={{ go_arch }}&plugins={{ caddy_features }}&license={{ caddy_license }}"
     caddy_sig_url: "{{ caddy_base_url }}/signature?plugins={{ caddy_features }}&license={{ caddy_license }}"
 
 - name: Download Caddy
