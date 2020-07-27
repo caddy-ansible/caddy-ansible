@@ -44,7 +44,7 @@
 - name: Download Caddy
   get_url:
     url: "{{ caddy_url }}"
-    dest: "{{ caddy_home }}/caddy.tar.gz"
+    dest: "{{ caddy_home }}/caddy"
     force_basic_auth: "{{ caddy_license != 'personal' }}"
     force: true
     timeout: 300
@@ -57,7 +57,7 @@
 - name: Download Caddy
   get_url:
     url: "{{ caddy_url }}"
-    dest: "{{ caddy_home }}/caddy.tar.gz"
+    dest: "{{ caddy_home }}/caddy"
     force_basic_auth: "{{ caddy_license != 'personal' }}"
     timeout: 300
   retries: 3
@@ -90,7 +90,7 @@
 - name: Download Caddy signature
   get_url:
     url: "{{ caddy_sig_url }}"
-    dest: "{{ caddy_home }}/caddy.tar.gz.asc"
+    dest: "{{ caddy_home }}/caddy.asc"
     timeout: 60
     force: true
     force_basic_auth: "{{ caddy_license != 'personal' }}"
@@ -100,27 +100,10 @@
 - name: Verify Caddy signature
   command: >
     gpg
-      --verify {{ caddy_home }}/caddy.tar.gz.asc
-      {{ caddy_home }}/caddy.tar.gz
+      --verify {{ caddy_home }}/caddy.asc
+      {{ caddy_home }}/caddy
   when: caddy_pgp_verify_signatures and (caddy_binary_cache.changed or caddy_download.changed)
   tags: skip_ansible_lint
-
-- name: Extract Caddy
-  unarchive:
-    src: "{{ caddy_home }}/caddy.tar.gz"
-    dest: "{{ caddy_home }}"
-    copy: false
-    owner: "{{ caddy_user }}"
-  when: caddy_binary_cache.changed
-  tags: skip_ansible_lint
-
-- name: Extract Caddy
-  unarchive:
-    src: "{{ caddy_home }}/caddy.tar.gz"
-    dest: "{{ caddy_home }}"
-    creates: "{{ caddy_home }}/caddy"
-    copy: false
-    owner: "{{ caddy_user }}"
 
 - name: Determine Caddy binary path
   set_fact:
