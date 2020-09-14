@@ -12,3 +12,11 @@ go_arch_map:
 go_arch: "{{ go_arch_map[ansible_architecture] | default(ansible_architecture) }}"
 
 caddy_auth_info: "{{ caddy_license_account_id }}:{{ caddy_license_api_key }}"
+
+caddy_url_base: "https://{{ caddy_auth_info + ' ' if caddy_license != 'personal' else '' }}caddyserver.com/api/download"
+caddy_url_args: "os={{ caddy_os }}&arch={{ go_arch }}&license={{ caddy_license }}\
+                 {% for pkg in caddy_packages %}\
+                 {% if loop.first %}&{% endif %}p={{ pkg }}{% if not loop.last %},{% endif %}\
+                 {% endfor %}"
+caddy_url: "{{ caddy_url_base }}?{{ caddy_url_args }}"
+caddy_sig_url: "{{ caddy_url_base }}/signature?{{ caddy_url_args }}"

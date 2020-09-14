@@ -35,25 +35,6 @@
 - name: Set some common parameters
   set_fact:
     caddy_bin_name: "caddy_{{ caddy_os }}_{{ go_arch }}"
-    caddy_common_args: "os={{ caddy_os }}&arch={{ go_arch }}&license={{ caddy_license }}\
-                        {% for pkg in caddy_packages %}\
-                        {% if loop.first %}&{% endif %}p={{ pkg }}{% if not loop.last %},{% endif %}\
-                        {% endfor %}"
-
-- name: Build base URL
-  set_fact:
-    caddy_base_url: "https://{{ caddy_auth_info }}@caddyserver.com/api/download"
-  when: caddy_license != 'personal'
-
-- name: Build base URL
-  set_fact:
-    caddy_base_url: "https://caddyserver.com/api/download"
-  when: caddy_license == 'personal'
-
-- name: Build request URLs
-  set_fact:
-    caddy_url: "{{ caddy_base_url }}?{{ caddy_common_args }}"
-    caddy_sig_url: "{{ caddy_base_url }}/signature?{{ caddy_common_args }}"
 
 - name: Download Caddy
   get_url:
