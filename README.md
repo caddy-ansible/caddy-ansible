@@ -12,7 +12,6 @@
   * [Auto update Caddy?](#auto-update-caddy)
   * [Additional Available Packages](#additional-available-packages)
   * [Use `setcap`?](#use-setcap)
-  * [Verify the PGP signature on download?](#verify-the-pgp-signature-on-download)
   * [Use systemd capabilities controls](#use-systemd-capabilities-controls)
   * [Add additional environment variables](#add-additional-environment-variables)
   * [Use additional CLI arguments](#use-additional-cli-arguments)
@@ -83,14 +82,6 @@ default:
 
 ```yaml
 caddy_setcap: true
-```
-
-### Verify the PGP signature on download?
-
-default:
-
-```yaml
-caddy_pgp_verify_signatures: false
 ```
 
 ### Use systemd capabilities controls

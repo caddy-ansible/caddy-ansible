@@ -26,10 +26,6 @@ caddy_systemd_protect_home: "false"
 caddy_systemd_protect_system: "full"
 caddy_systemd_nproc_limit: 0
 caddy_setcap: true
-caddy_pgp_key_id: 65760C51EDEA2017CEA2CA15155B6D79CA56EA34
-caddy_pgp_key_server: hkp://keyserver.ubuntu.com
-caddy_pgp_recv_timeout: 60
-caddy_pgp_verify_signatures: false
 caddy_config: |
   http://localhost:2020
   respond "Hello, world!"
