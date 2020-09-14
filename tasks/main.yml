@@ -37,7 +37,6 @@
   get_url:
     url: "{{ caddy_url }}"
     dest: "{{ caddy_home }}/caddy"
-    force_basic_auth: "{{ caddy_license != 'personal' }}"
     force: true
     timeout: 300
   retries: 3
@@ -50,7 +49,6 @@
   get_url:
     url: "{{ caddy_url }}"
     dest: "{{ caddy_home }}/caddy"
-    force_basic_auth: "{{ caddy_license != 'personal' }}"
     timeout: 300
   retries: 3
   delay: 2
@@ -85,7 +83,6 @@
 #     dest: "{{ caddy_home }}/caddy.tar.gz.asc"
 #     timeout: 60
 #     force: true
-#     force_basic_auth: "{{ caddy_license != 'personal' }}"
 #   when: caddy_pgp_verify_signatures and (caddy_binary_cache.changed or caddy_download.changed)
 #   tags: skip_ansible_lint
 

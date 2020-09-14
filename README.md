@@ -9,9 +9,8 @@
 - [Role Variables](#role-variables)
   * [The Caddyfile](#the-caddyfile)
   * [The OS to download caddy for](#the-os-to-download-caddy-for)
-  * [The type of license to use](#the-type-of-license-to-use)
   * [Auto update Caddy?](#auto-update-caddy)
-  * [Additional Available Features](#additional-available-features)
+  * [Additional Available Packages](#additional-available-packages)
   * [Use `setcap`?](#use-setcap)
   * [Verify the PGP signature on download?](#verify-the-pgp-signature-on-download)
   * [Use systemd capabilities controls](#use-systemd-capabilities-controls)
@@ -56,21 +55,6 @@ default:
 
 ```yaml
 caddy_os: linux
-```
-
-### The type of license to use
-
-default:
-
-```yaml
-caddy_license: personal
-```
-
-If you set the license type to `commercial` then you should also specify (replacing the dummy values with your real ones):
-
-```yaml
-caddy_license_account_id: YOUR_ACCOUNT_ID
-caddy_license_api_key: YOUR_API_KEY
 ```
 
 ### Auto update Caddy?
