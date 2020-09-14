@@ -32,14 +32,10 @@
   when: caddy_update
   register: caddy_features_cache
 
-- name: Set some common parameters
-  set_fact:
-    caddy_bin_name: "caddy_{{ caddy_os }}_{{ go_arch }}"
-
 - name: Download Caddy
   get_url:
     url: "{{ caddy_url }}"
-    dest: "{{ caddy_home }}/{{ caddy_bin_name }}"
+    dest: "{{ caddy_home }}/caddy"
     force_basic_auth: "{{ caddy_license != 'personal' }}"
     force: true
     timeout: 300
@@ -52,7 +48,7 @@
 - name: Download Caddy
   get_url:
     url: "{{ caddy_url }}"
-    dest: "{{ caddy_home }}/{{ caddy_bin_name }}"
+    dest: "{{ caddy_home }}/caddy"
     force_basic_auth: "{{ caddy_license != 'personal' }}"
     timeout: 300
   retries: 3
@@ -106,7 +102,7 @@
 
 - name: Copy Caddy Binary
   copy:
-    src: "{{ caddy_home }}/{{ caddy_bin_name }}"
+    src: "{{ caddy_home }}/caddy"
     dest: "{{ caddy_bin }}"
     mode: 0755
     remote_src: true
