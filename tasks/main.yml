@@ -29,6 +29,7 @@
   copy:
     content: "{{ ','.join(caddy_packages) }}"
     dest: "{{ caddy_home }}/features.txt"
+    mode: 0640
   when: caddy_update
   register: caddy_features_cache
 
@@ -131,6 +132,7 @@
     content: "{{ caddy_config }}"
     dest: "{{ caddy_conf_dir }}/Caddyfile"
     owner: "{{ caddy_user }}"
+    mode: 0640
   notify:
     - Reload caddy
 
