@@ -11,6 +11,8 @@ go_arch_map:
 
 go_arch: "{{ go_arch_map[ansible_architecture] | default(ansible_architecture) }}"
 
+caddy_bin: "{{ caddy_bin_dir }}/caddy"
+
 caddy_url: "https://caddyserver.com/api/download?os={{ caddy_os }}&arch={{ go_arch }}\
            {% for pkg in caddy_packages %}\
            {% if loop.first %}&{% endif %}p={{ pkg | urlencode() }}{% if not loop.last %},{% endif %}\

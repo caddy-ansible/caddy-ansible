@@ -16,4 +16,5 @@
 
 - name: Set Caddy url
   set_fact:
-    caddy_url: "https://github.com/caddyserver/caddy/releases/download/{{ caddy_tag }}/caddy_{{ caddy_version }}_{{ caddy_os }}_{{ go_arch }}.tar.gz"
+    caddy_url: "https://github.com/caddyserver/caddy/releases/download/\
+                {{ caddy_tag }}/caddy_{{ caddy_version }}_{{ caddy_os }}_{{ go_arch }}.tar.gz"
