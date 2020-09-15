@@ -33,10 +33,13 @@
   when: caddy_update
   register: caddy_features_cache
 
+- include: github-url.yml
+  when: caddy_use_github
+
 - name: Download Caddy
   get_url:
     url: "{{ caddy_url }}"
-    dest: "{{ caddy_home }}/caddy"
+    dest: "{{ caddy_home }}/{{ 'caddy.tar.gz' if caddy_use_github else 'caddy' }}"
     force: true
     timeout: 300
   retries: 3
@@ -48,12 +51,15 @@
 - name: Download Caddy
   get_url:
     url: "{{ caddy_url }}"
-    dest: "{{ caddy_home }}/caddy"
+    dest: "{{ caddy_home }}/{{ 'caddy.tar.gz' if caddy_use_github else 'caddy' }}"
     timeout: 300
   retries: 3
   delay: 2
   register: caddy_download
   tags: skip_ansible_lint
+
+- include: github-extract.yml
+  when: caddy_use_github
 
 - name: Determine Caddy binary path
   set_fact:

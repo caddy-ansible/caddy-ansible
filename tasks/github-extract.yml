@@ -1,0 +1,17 @@
+---
+- name: Extract Caddy
+  unarchive:
+    src: "{{ caddy_home }}/caddy.tar.gz"
+    dest: "{{ caddy_home }}"
+    copy: false
+    owner: "{{ caddy_user }}"
+  when: caddy_binary_cache.changed
+  tags: skip_ansible_lint
+
+- name: Extract Caddy
+  unarchive:
+    src: "{{ caddy_home }}/caddy.tar.gz"
+    dest: "{{ caddy_home }}"
+    creates: "{{ caddy_home }}/caddy"
+    copy: false
+    owner: "{{ caddy_user }}"
