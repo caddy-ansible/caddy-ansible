@@ -2,13 +2,11 @@
 # defaults file for caddy-ansible
 caddy_user: www-data
 caddy_home: /home/caddy
-caddy_features: http.git
+caddy_packages: []
 caddy_update: true
 caddy_bin_dir: /usr/local/bin
 caddy_conf_dir: /etc/caddy
-caddy_license: personal
-caddy_license_account_id:
-caddy_license_api_key:
+caddy_github_token: ""
 caddy_log_dir: /var/log/caddy
 caddy_log_file: stdout
 caddy_certs_dir: /etc/ssl/caddy
@@ -28,15 +26,8 @@ caddy_systemd_protect_home: "false"
 caddy_systemd_protect_system: "full"
 caddy_systemd_nproc_limit: 0
 caddy_setcap: true
-caddy_pgp_key_id: 65760C51EDEA2017CEA2CA15155B6D79CA56EA34
-caddy_pgp_key_server: hkp://keyserver.ubuntu.com
-caddy_pgp_recv_timeout: 60
-caddy_pgp_verify_signatures: false
 caddy_config: |
-  localhost:2020
-  gzip
-  # tls email@example.com
-  # root /var/www
-  git github.com/antoiner77/caddy-ansible
-
+  http://localhost:2020
+  respond "Hello, world!"
 caddy_environment_variables: {}
+caddy_os: linux

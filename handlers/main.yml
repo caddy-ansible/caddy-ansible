@@ -1,12 +1,12 @@
 ---
-# handlers file for caddy-ansible
-- name: restart caddy
+
+- name: Restart caddy
   systemd:
     daemon_reload: true
     name: caddy
     state: restarted
 
-- name: reload caddy
+- name: Reload caddy
   systemd:
     name: caddy
     state: reloaded

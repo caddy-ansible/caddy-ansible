@@ -1,5 +1,7 @@
 ---
 # vars file for caddy-ansible
+caddy_github_headers: {}
+
 go_arch_map:
   i386: '386'
   x86_64: 'amd64'
@@ -9,4 +11,11 @@ go_arch_map:
 
 go_arch: "{{ go_arch_map[ansible_architecture] | default(ansible_architecture) }}"
 
-caddy_auth_info: "{{ caddy_license_account_id }}:{{ caddy_license_api_key }}"
+caddy_bin: "{{ caddy_bin_dir }}/caddy"
+
+caddy_url: "https://caddyserver.com/api/download?os={{ caddy_os }}&arch={{ go_arch }}\
+           {% for pkg in caddy_packages %}\
+           {% if loop.first %}&{% endif %}p={{ pkg | urlencode() }}{% if not loop.last %},{% endif %}\
+           {% endfor %}"
+
+caddy_use_github: "{{ caddy_packages == [] }}"

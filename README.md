@@ -1,113 +1,153 @@
 [![Build Status](https://travis-ci.org/caddy-ansible/caddy-ansible.svg?branch=master)](https://travis-ci.org/caddy-ansible/caddy-ansible)
 [![Galaxy Role](https://img.shields.io/badge/ansible--galaxy-caddy-blue.svg)](https://galaxy.ansible.com/caddy_ansible/caddy_ansible/)
 
-Caddy Ansible Role
-=========
+# Caddy Ansible Role
+
+<!-- toc -->
+
+- [Dependencies](#dependencies)
+- [Role Variables](#role-variables)
+  * [The Caddyfile](#the-caddyfile)
+  * [The OS to download caddy for](#the-os-to-download-caddy-for)
+  * [Auto update Caddy?](#auto-update-caddy)
+  * [Additional Available Packages](#additional-available-packages)
+  * [Use `setcap`?](#use-setcap)
+  * [Use systemd capabilities controls](#use-systemd-capabilities-controls)
+  * [Add additional environment variables](#add-additional-environment-variables)
+  * [Use additional CLI arguments](#use-additional-cli-arguments)
+  * [Use a GitHub OAuth token to request the list of caddy releases](#use-a-github-oauth-token-to-request-the-list-of-caddy-releases)
+- [Example Playbooks](#example-playbooks)
+- [Debugging](#debugging)
+- [Contributing](#contributing)
+
+<!-- tocstop -->
 
 This role installs and configures the caddy web server. The user can specify any http configuration parameters they wish to apply their site. Any number of sites can be added with configurations of your choice.
 
-Dependencies
-------------
+## Dependencies
+
 None
 
-Role Variables
---------------
+## Role Variables
 
-**The [Caddyfile](https://caddyserver.com/docs/caddyfile)** (notice the pipe)<br>
+### The Caddyfile
+
+See [Caddyfile docs](https://caddyserver.com/docs/caddyfile). Notice the `|` used to include a multi-line string.
+
 default:
-```
+
+```yaml
 caddy_config: |
-  localhost:2020
-  gzip
-  # tls email@example.com
-  root /var/www
-  git github.com/antoiner77/caddy-ansible
+  http://localhost:2020
+  respond "Hello, world!"
 ```
 
 If you wish to use a template for the config you can do this:
-```
+
+```yaml
 caddy_config: "{{ lookup('template', 'templates/Caddyfile.j2') }}"
 ```
 
-**The type of license to use**<br>
-default:
-```
-caddy_license: personal
-```
-If you set the license type to `commercial` then you should also specify (replacing the dummy values with your real ones):
-```
-caddy_license_account_id: YOUR_ACCOUNT_ID
-caddy_license_api_key: YOUR_API_KEY
-```
-**Auto update Caddy?**<br>
-default:
-```
-caddy_update: yes
-```
-**Features that can be added to core:** http.authz, http.awses, http.awslambda,
-http.cache, http.cgi, http.cors, http.datadog, http.expires, http.filebrowser,
-http.filter, http.forwardproxy, http.git, http.gopkg, http.grpc, http.hugo,
-http.ipfilter, http.jekyll, http.jwt, http.locale, http.login, http.mailout,
-http.minify, http.nobots, http.prometheus, http.proxyprotocol, http.ratelimit,
-http.realip, http.reauth, http.restic, http.upload, http.webdav, dns, net,
-hook.service, tls.dns.azure, tls.dns.cloudflare, tls.dns.digitalocean,
-tls.dns.dnsimple, tls.dns.dnspod, tls.dns.dyn, tls.dns.exoscale, tls.dns.gandi,
-tls.dns.googlecloud, tls.dns.linode, tls.dns.namecheap, tls.dns.ovh,
-tls.dns.rackspace, tls.dns.rfc2136, tls.dns.route53, tls.dns.vultr
+### The OS to download caddy for
 
-Changing this variable will reinstall Caddy with the new features if `caddy_update` is enabled<br>
 default:
+
+```yaml
+caddy_os: linux
 ```
-caddy_features: http.git
-```
-**Use `setcap` for allowing Caddy to open a low port (e.g. 80, 443)?**<br>
+
+### Auto update Caddy?
+
 default:
+
+```yaml
+caddy_update: true
 ```
-caddy_setcap: yes
-```
-**Verify the PGP signature on download?**<br>
-```
-caddy_pgp_verify_signatures: no
-```
-**Use systemd capabilities controls**<br>
+
+### Additional Available Packages
+
+Changing this variable will reinstall Caddy with the new packages if `caddy_update` is enabled. Check https://caddyserver.com/download for available packages.
+
 default:
+
+```yaml
+caddy_packages: []
 ```
-caddy_systemd_capabilities_enabled: False
+
+### Use `setcap`?
+
+This allows Caddy to open a low port (under 1024 - e.g. 80, 443).
+
+default:
+
+```yaml
+caddy_setcap: true
+```
+
+### Use systemd capabilities controls
+
+default:
+
+```yaml
+caddy_systemd_capabilities_enabled: false
 caddy_systemd_capabilities: "CAP_NET_BIND_SERVICE"
 ```
+
 NOTE: This feature requires systemd v229 or newer and might be needed in addition to `caddy_setcap: yes`.
 
 Supported:
+
 * Debian 9 (stretch)
 * Fedora 25
 * Ubuntu 16.04 (xenial)
 
 RHEL/CentOS has no release that supports systemd capability controls at this time.
 
-**Add additional environment variables**<br>
+### Add additional environment variables
 
-Add environment variables to the systemd script
+Add environment variables to the systemd script.
 
+default:
+
+```yaml
+caddy_environment_variables: {}
 ```
+
+Example usage:
+
+```yaml
 caddy_environment_variables:
   FOO: bar
   SECONDVAR: spam
 ```
 
-**Use additional cli arguments**<br>
+### Use additional CLI arguments
+
 default:
-```
+
+```yaml
 caddy_additional_args: ""
 ```
-Example for Letsencrypt staging:
-```
+
+Example for LetsEncrypt staging:
+
+```yaml
 caddy_additional_args: "-ca https://acme-staging.api.letsencrypt.org/directory"
 ```
 
+### Use a GitHub OAuth token to request the list of caddy releases
 
-Example Playbooks
-----------------
+This role uses the GitHub releases list to check when a new version is available. [GitHub has some fairly agressive rate-limiting](https://developer.github.com/v3/#rate-limiting) which can cause failures. You can set your GitHub token to increase the limits for yourself when running the role (e.g. if deploying many servers behind a NAT or running this role repeatedly as part of a CI process).
+
+default:
+
+```yaml
+caddy_github_token: ""
 ```
+
+## Example Playbooks
+
+```yaml
 ---
 - hosts: all
   roles:
@@ -122,9 +162,9 @@ Example Playbooks
         git github.com/antoiner77/caddy-ansible
 ```
 
-Example with Cloudflare DNS for TLS
+Example with Cloudflare DNS for TLS:
 
-```
+```yaml
 ---
 - hosts: all
   roles:
@@ -135,7 +175,6 @@ Example with Cloudflare DNS for TLS
         CLOUDFLARE_API_KEY: 1234567890
       caddy_config: |
         yourcloudflareddomain.com {
-
             tls {
                 dns cloudflare
             }
@@ -147,21 +186,22 @@ Example with Cloudflare DNS for TLS
         }
 ```
 
-Debugging
----------
-If the service fails to start you can figure out why by looking at the output of Caddy.<br>
+## Debugging
 
-```console
+If the service fails to start you can figure out why by looking at the output of Caddy.
+
+```bash
 systemctl status caddy -l
 ```
 
 If something doesn't seem right, open an issue!
 
-Contributing
-------------
+## Contributing
+
 Pull requests are welcome. Please test your changes beforehand with vagrant:
-```
+
+```bash
 vagrant up
-vagrant provision (since it already provisioned there should be no changes here)
+vagrant provision   # (since it already provisioned there should be no changes here)
 vagrant destroy
 ```
