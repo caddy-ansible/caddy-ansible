@@ -150,39 +150,44 @@ caddy_github_token: ""
 ```yaml
 ---
 - hosts: all
+  become: yes
   roles:
-    - role: caddy-ansible
+    - role: caddy
       caddy_config: |
-        localhost:2020
-        gzip
-
-        tls email@example.com
-
-        root /var/www
-        git github.com/antoiner77/caddy-ansible
+        files.example.com
+        encode gzip
+        file_server browse {
+            root /home/caddy/
+        }
 ```
 
-Example with Cloudflare DNS for TLS:
+Example with DigitalOcean DNS for TLS:
 
 ```yaml
 ---
 - hosts: all
   roles:
     - role: caddy-ansible
-      caddy_features: tls.dns.cloudflare
       caddy_environment_variables:
-        CLOUDFLARE_EMAIL: your@email.com
-        CLOUDFLARE_API_KEY: 1234567890
+        DO_AUTH_TOKEN: "your-token-here"
+      caddy_systemd_capabilities_enabled: true
+      caddy_systemd_network_dependency: false
+      caddy_packages: ["github.com/caddy-dns/lego-deprecated"]
       caddy_config: |
-        yourcloudflareddomain.com {
-            tls {
-                dns cloudflare
+        nextcloud.example.com {
+            log
+
+            reverse_proxy http://localhost:8080 {
+                header_up Host {http.request.host}
+                header_up X-Real-IP {http.request.remote.host}
+                header_up X-Forwarded-For {http.request.remote.host}
+                header_up X-Forwarded-Port {http.request.port}
+                header_up X-Forwarded-Proto {http.request.scheme}
             }
 
-            gzip
-
-            root /var/www
-            git github.com/antoiner77/caddy-ansible
+            tls webmaster@example.com {
+                dns lego_deprecated digitalocean
+            }
         }
 ```
 
