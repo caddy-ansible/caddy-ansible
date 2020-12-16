@@ -1,7 +1,7 @@
 ---
 - name: Get latest Caddy release details
   uri:
-    url: https://api.github.com/repos/mholt/caddy/releases/latest
+    url: https://api.github.com/repos/caddyserver/caddy/releases/latest
     return_content: true
     headers: '{{ caddy_github_headers }}'
   register: latest_caddy_release

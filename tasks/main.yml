@@ -17,7 +17,7 @@
 
 - name: Get all Caddy releases
   get_url:
-    url: https://api.github.com/repos/mholt/caddy/git/refs/tags
+    url: https://api.github.com/repos/caddyserver/caddy/git/refs/tags
     dest: "{{ caddy_home }}/releases.txt"
     force: true
     headers: '{{ caddy_github_headers }}'
