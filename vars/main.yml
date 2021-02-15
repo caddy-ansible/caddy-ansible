@@ -15,7 +15,7 @@ caddy_bin: "{{ caddy_bin_dir }}/caddy"
 
 caddy_url: "https://caddyserver.com/api/download?os={{ caddy_os }}&arch={{ go_arch }}\
            {% for pkg in caddy_packages %}\
-           {% if loop.first %}&{% endif %}p={{ pkg | urlencode() }}{% if not loop.last %},{% endif %}\
+           {% if loop.first %}&{% endif %}package={{ pkg | urlencode() }}{% if not loop.last %},{% endif %}\
            {% endfor %}"
 
 caddy_use_github: "{{ caddy_packages == [] }}"
