@@ -17,7 +17,7 @@ caddy_arch_param_map:
   armv7l: 'arch=arm&arm=7'
   armv6l: 'arch=arm&arm=6'
 
-caddy_arch_param: "{{ caddy_arch_param_map[ansible_architecture] | default('arch={{ go_arch }}') }}"
+caddy_arch_param: "{{ caddy_arch_param_map[ansible_architecture] | default('arch=' + go_arch) }}"
 
 caddy_url: "https://caddyserver.com/api/download?os={{ caddy_os }}&{{ caddy_arch_param }}\
            {% for pkg in caddy_packages %}\
