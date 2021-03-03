@@ -5,4 +5,4 @@
     - name: Install curl
       package: name=curl state=present
   roles:
-    - caddy-ansible
+    - caddy_ansible.caddy_ansible

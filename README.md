@@ -152,7 +152,7 @@ caddy_github_token: ""
 - hosts: all
   become: yes
   roles:
-    - role: caddy
+    - role: caddy_ansible.caddy_ansible
       caddy_config: |
         files.example.com
         encode gzip
@@ -167,7 +167,7 @@ Example with DigitalOcean DNS for TLS:
 ---
 - hosts: all
   roles:
-    - role: caddy-ansible
+    - role: caddy_ansible.caddy_ansible
       caddy_environment_variables:
         DO_AUTH_TOKEN: "your-token-here"
       caddy_systemd_capabilities_enabled: true
