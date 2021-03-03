@@ -1,6 +1,6 @@
 ---
 galaxy_info:
-  author: antoiner77
+  author: caddy_ansible
   description: Installs and configures a Caddy webserver
   license: MIT
   min_ansible_version: 2.0
