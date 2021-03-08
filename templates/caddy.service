@@ -49,7 +49,7 @@ ProtectHome={{ caddy_systemd_protect_home }}
 ProtectSystem={{ caddy_systemd_protect_system }}
 ; … except {{ caddy_certs_dir }}, because we want Letsencrypt-certificates there.
 ;   This merely retains r/w access rights, it does not add any new. Must still be writable on the host!
-ReadWriteDirectories={{ caddy_certs_dir }}
+ReadWriteDirectories={{ caddy_certs_dir }} {{ caddy_log_dir }}
 
 {% if caddy_systemd_capabilities_enabled %}
 ; The following additional security directives only work with systemd v229 or later.
