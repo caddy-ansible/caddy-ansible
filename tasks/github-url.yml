@@ -14,7 +14,9 @@
   set_fact:
     caddy_version: "{{ caddy_tag | regex_replace('^v', '') }}"
 
-- name: Set Caddy url
+- name: Set Caddy urls
   set_fact:
     caddy_url: "https://github.com/caddyserver/caddy/releases/download/\
                 {{ caddy_tag }}/caddy_{{ caddy_version }}_{{ caddy_os }}_{{ go_arch }}.tar.gz"
+    caddy_checksum_url: "sha512:https://github.com/caddyserver/caddy/releases/download/\
+                         {{ caddy_tag }}/caddy_{{ caddy_version }}_checksums.txt"

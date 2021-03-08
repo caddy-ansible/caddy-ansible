@@ -44,6 +44,7 @@
 - name: Download Caddy
   get_url:
     url: "{{ caddy_url }}"
+    checksum: "{{ caddy_checksum_url | default(omit) }}"
     dest: "{{ caddy_home }}/{{ 'caddy.tar.gz' if caddy_use_github else 'caddy' }}"
     force: true
     timeout: 300
@@ -59,6 +60,7 @@
 - name: Download Caddy
   get_url:
     url: "{{ caddy_url }}"
+    checksum: "{{ caddy_checksum_url | default(omit) }}"
     dest: "{{ caddy_home }}/{{ 'caddy.tar.gz' if caddy_use_github else 'caddy' }}"
     timeout: 300
     mode: 0644
