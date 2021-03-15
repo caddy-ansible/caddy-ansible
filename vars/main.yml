@@ -21,7 +21,7 @@ caddy_arch_param: "{{ caddy_arch_param_map[ansible_architecture] | default('arch
 
 caddy_url: "https://caddyserver.com/api/download?os={{ caddy_os }}&{{ caddy_arch_param }}\
            {% for pkg in caddy_packages %}\
-           {% if loop.first %}&{% endif %}p={{ pkg | urlencode() }}{% if not loop.last %},{% endif %}\
+           &p={{ pkg | urlencode() }}\
            {% endfor %}"
 
 caddy_use_github: "{{ caddy_packages == [] }}"
