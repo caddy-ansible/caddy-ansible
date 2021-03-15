@@ -1,0 +1,49 @@
+---
+name: CI
+'on':
+  pull_request:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "30 7 * * 3"
+
+defaults:
+  run:
+    working-directory: 'caddy_ansible.caddy_ansible'
+
+jobs:
+  molecule:
+    name: Molecule
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        distro:
+          - centos8
+          - centos7
+          - fedora29
+          - ubuntu2004
+          - ubuntu1804
+          - debian10
+          - debian9
+
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v2
+        with:
+          path: 'caddy_ansible.caddy_ansible'
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install test dependencies.
+        run: pip3 install ansible ansible-lint yamllint molecule[docker] pytest testinfra
+
+      - name: Run Molecule tests.
+        run: molecule test
+        env:
+          PY_COLORS: '1'
+          ANSIBLE_FORCE_COLOR: '1'
+          MOLECULE_DISTRO: ${{ matrix.distro }}
