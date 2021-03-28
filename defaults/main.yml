@@ -6,6 +6,7 @@ caddy_packages: []
 caddy_update: true
 caddy_bin_dir: /usr/local/bin
 caddy_conf_dir: /etc/caddy
+caddy_conf_filename: Caddyfile
 caddy_github_token: ""
 caddy_log_dir: /var/log/caddy
 caddy_log_file: stdout
