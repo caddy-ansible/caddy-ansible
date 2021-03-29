@@ -11,7 +11,6 @@ caddy_github_token: ""
 caddy_log_dir: /var/log/caddy
 caddy_log_file: stdout
 caddy_certs_dir: /etc/ssl/caddy
-caddy_http2_enabled: "true"
 # additional cli args to pass to caddy
 caddy_additional_args: ""
 caddy_systemd_network_dependency: true
