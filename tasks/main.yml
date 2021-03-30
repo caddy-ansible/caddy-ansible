@@ -15,73 +15,66 @@
     caddy_github_headers: "{{ caddy_github_headers | combine({'Authorization': 'token ' + caddy_github_token}) }}"
   when: caddy_github_token | length > 0
 
-- name: Get all Caddy releases
-  get_url:
-    url: https://api.github.com/repos/caddyserver/caddy/git/refs/tags
-    dest: "{{ caddy_home }}/releases.txt"
-    force: true
-    headers: '{{ caddy_github_headers }}'
-    owner: "{{ caddy_user }}"
-    group: "{{ caddy_user_details.group }}"
-  retries: 3
-  delay: 2
+- name: Ensure latest Caddy
   when: caddy_update
-  register: caddy_releases_cache
-
-- name: Set Caddy features
-  copy:
-    content: "{{ ','.join(caddy_packages) }}"
-    dest: "{{ caddy_home }}/features.txt"
-    mode: 0640
-    owner: "{{ caddy_user }}"
-    group: "{{ caddy_user_details.group }}"
-  when: caddy_update
-  register: caddy_features_cache
-
-- include: github-url.yml
-  when: caddy_use_github
-
-- name: Download Caddy
-  get_url:
-    url: "{{ caddy_url }}"
-    checksum: "{{ caddy_checksum_url | default('') }}"
-    dest: "{{ caddy_home }}/{{ 'caddy.tar.gz' if caddy_use_github else 'caddy' }}"
-    force: true
-    timeout: 300
-    mode: 0644
-    owner: "{{ caddy_user }}"
-    group: "{{ caddy_user_details.group }}"
-  retries: 3
-  delay: 2
-  when: caddy_releases_cache.changed or caddy_features_cache.changed
-  register: caddy_binary_cache
-  tags: skip_ansible_lint
-
-- name: Download Caddy
-  get_url:
-    url: "{{ caddy_url }}"
-    checksum: "{{ caddy_checksum_url | default('') }}"
-    dest: "{{ caddy_home }}/{{ 'caddy.tar.gz' if caddy_use_github else 'caddy' }}"
-    timeout: 300
-    mode: 0644
-    owner: "{{ caddy_user }}"
-    group: "{{ caddy_user_details.group }}"
-  retries: 3
-  delay: 2
-  register: caddy_download
-  tags: skip_ansible_lint
-
-- include: github-extract.yml
-  when: caddy_use_github
-
-- name: Copy Caddy Binary
-  copy:
-    src: "{{ caddy_home }}/caddy"
-    dest: "{{ caddy_bin }}"
-    mode: 0755
-    remote_src: true
-  notify:
-    - Restart caddy
+  block:
+    - name: Vanilla Caddy
+      when: caddy_use_github
+      block:
+        - name: Get latest Caddy statble release
+          uri:
+            url: https://api.github.com/repos/caddyserver/caddy/releases/latest
+          register: latest_caddy_release
+        - name: Set latest Caddy version
+          set_fact:
+            latest_caddy_version: "{{ latest_caddy_release.json.tag_name }}"
+    - name: Custom Caddy
+      when: not caddy_use_github
+      block:
+        - name: Get Caddy tags
+          uri:
+            url: https://api.github.com/repos/caddyserver/caddy/tags
+          register: caddy_tags
+        - name: Set latest Caddy version
+          set_fact:
+            latest_caddy_version: "{{ caddy_tags.json[0].name }}"
+    - name: Get installed Caddy version
+      shell: caddy version | awk '{print $1}'
+      register: installed_caddy_version
+      changed_when: false
+      failed_when: false
+    - name: Set Caddy features
+      copy:
+        content: "{{ ','.join(caddy_packages) }}"
+        dest: "{{ caddy_home }}/features.txt"
+        mode: 0640
+        owner: "{{ caddy_user }}"
+        group: "{{ caddy_user_details.group }}"
+      register: caddy_features_cache
+    - name: Update Caddy
+      when: latest_caddy_version != installed_caddy_version.stdout or caddy_features_cache.changed
+      block:
+        - name: Set Caddy urls
+          when: caddy_use_github
+          set_fact:
+            caddy_url: "https://github.com/caddyserver/caddy/releases/download/{{ latest_caddy_version }}/\
+                        caddy_{{ latest_caddy_version|trim('v') }}_{{ caddy_os }}_{{ go_arch }}.tar.gz"
+        - name: Download & Extract Caddy
+          unarchive:
+            src: "{{ caddy_url }}"
+            dest: "{{ caddy_home }}"
+            remote_src: true
+            mode: 0644
+            owner: "{{ caddy_user }}"
+            group: "{{ caddy_user_details.group }}"
+        - name: Copy Caddy Binary
+          copy:
+            src: "{{ caddy_home }}/caddy"
+            dest: "{{ caddy_bin }}"
+            mode: 0755
+            remote_src: true
+          notify:
+            - Restart caddy
 
 - name: Create directories
   file:
