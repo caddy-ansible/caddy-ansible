@@ -1,2 +1,3 @@
+---
 skip_list:
   - 'role-name'     # Role name caddy-ansible does not match `^[a-z][a-z0-9_]+$` pattern
