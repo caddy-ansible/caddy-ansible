@@ -100,10 +100,10 @@
     owner: "{{ caddy_user }}"
     mode: 0775
 
-- name: Create Caddyfile
+- name: Create caddy config
   copy:
     content: "{{ caddy_config }}"
-    dest: "{{ caddy_conf_dir }}/Caddyfile"
+    dest: "{{ caddy_conf_dir }}/{{ caddy_conf_filename }}"
     owner: "{{ caddy_user }}"
     mode: 0640
   notify:

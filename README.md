@@ -32,11 +32,12 @@ None
 
 ### The Caddyfile
 
-See [Caddyfile docs](https://caddyserver.com/docs/caddyfile). Notice the `|` used to include a multi-line string.
+See [Caddyfile docs](https://caddyserver.com/docs/caddyfile). Notice the `|` used to include a multi-line string. You may set `caddy_conf_filename` to `config.json` to use json format.
 
 default:
 
 ```yaml
+caddy_conf_filename: Caddyfile
 caddy_config: |
   http://localhost:2020
   respond "Hello, world!"
