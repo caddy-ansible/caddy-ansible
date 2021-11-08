@@ -26,3 +26,6 @@ galaxy_info:
     - system
     - web
 dependencies: []
+
+collections:
+    - community.general
