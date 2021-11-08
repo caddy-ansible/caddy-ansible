@@ -120,7 +120,7 @@
     - Restart caddy
 
 - name: Set capability on the binary file to be able to bind to TCP port <1024
-  capabilities:
+  community.general.capabilities:
     path: "{{ caddy_bin }}"
     capability: cap_net_bind_service+eip
     state: present
