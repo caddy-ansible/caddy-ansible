@@ -9,10 +9,12 @@
 - name: Set Caddy tag
   set_fact:
     caddy_tag: "{{ (latest_caddy_release.content | from_json).get('tag_name') }}"
+  when: caddy_update
 
 - name: Set Caddy version
   set_fact:
     caddy_version: "{{ caddy_tag | regex_replace('^v', '') }}"
+  when: caddy_update
 
 - name: Set Caddy urls
   set_fact:
@@ -20,3 +22,4 @@
                 {{ caddy_tag }}/caddy_{{ caddy_version }}_{{ caddy_os }}_{{ go_arch }}.tar.gz"
     caddy_checksum_url: "sha512:https://github.com/caddyserver/caddy/releases/download/\
                          {{ caddy_tag }}/caddy_{{ caddy_version }}_checksums.txt"
+  when: caddy_update
