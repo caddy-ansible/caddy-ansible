@@ -126,7 +126,7 @@
     state: present
   when: caddy_setcap
 
-- name: Ensue caddy service is up-to-date before starting it
+- name: Ensure caddy service is up-to-date before starting it
   meta: flush_handlers
 
 - name: Start Caddy service
