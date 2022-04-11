@@ -192,6 +192,13 @@ Example with DigitalOcean DNS for TLS:
         }
 ```
 
+## Developing
+
+```bash
+python3 -m pip install -U ansible ansible-lint yamllint molecule[docker] pytest testinfra
+PY_COLORS=1 ANSIBLE_FORCE_COLOR=1 MOLECULE_DISTRO=ubuntu2004 molecule test
+```
+
 ## Debugging
 
 If the service fails to start you can figure out why by looking at the output of Caddy.
