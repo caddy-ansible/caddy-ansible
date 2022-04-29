@@ -76,7 +76,7 @@ Environment={{ key }}={{ value }}
 ; Additional environment files:
 
 {% for path in caddy_environment_files %}
-Environment=-path
+EnvironmentFile=-path
 {% endfor %}
 
 {% endif %}
