@@ -13,7 +13,7 @@
   * [Additional Available Packages](#additional-available-packages)
   * [Use `setcap`?](#use-setcap)
   * [Use systemd capabilities controls](#use-systemd-capabilities-controls)
-  * [Add additional environment variables](#add-additional-environment-variables)
+  * [Add additional environment variables or files](#add-additional-environment-variables)
   * [Use additional CLI arguments](#use-additional-cli-arguments)
   * [Use a GitHub OAuth token to request the list of caddy releases](#use-a-github-oauth-token-to-request-the-list-of-caddy-releases)
 - [Example Playbooks](#example-playbooks)
@@ -106,7 +106,7 @@ RHEL/CentOS has no release that supports systemd capability controls at this tim
 
 ### Add additional environment variables
 
-Add environment variables to the systemd script.
+Add [environment variables](https://www.freedesktop.org/software/systemd/man/systemd.exec.html#Environment=) to the systemd script.
 
 default:
 
@@ -120,6 +120,21 @@ Example usage:
 caddy_environment_variables:
   FOO: bar
   SECONDVAR: spam
+```
+
+Add [environment files](https://www.freedesktop.org/software/systemd/man/systemd.exec.html#EnvironmentFile=) to the systemd script.
+
+default:
+
+```yaml
+caddy_environment_files: []
+```
+
+Example usage:
+
+```yaml
+caddy_environment_files:
+  - /etc/default/caddy_additional_env_file
 ```
 
 ### Use additional CLI arguments

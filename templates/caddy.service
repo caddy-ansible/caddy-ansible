@@ -69,5 +69,16 @@ Environment={{ key }}={{ value }}
 {% endfor %}
 
 {% endif %}
+
+{% endif %}
+{% if caddy_environment_files|length %}
+
+; Additional environment files:
+
+{% for path in caddy_environment_files %}
+Environment=-path
+{% endfor %}
+
+{% endif %}
 [Install]
 WantedBy=multi-user.target
