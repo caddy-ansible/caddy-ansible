@@ -30,4 +30,5 @@ caddy_config: |
   http://localhost:2020
   respond "Hello, world!"
 caddy_environment_variables: {}
+caddy_environment_files: []
 caddy_os: linux
