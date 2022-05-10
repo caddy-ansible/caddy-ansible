@@ -13,10 +13,11 @@
   * [Additional Available Packages](#additional-available-packages)
   * [Use `setcap`?](#use-setcap)
   * [Use systemd capabilities controls](#use-systemd-capabilities-controls)
-  * [Add additional environment variables or files](#add-additional-environment-variables)
+  * [Add additional environment variables or files](#add-additional-environment-variables-or-files)
   * [Use additional CLI arguments](#use-additional-cli-arguments)
   * [Use a GitHub OAuth token to request the list of caddy releases](#use-a-github-oauth-token-to-request-the-list-of-caddy-releases)
 - [Example Playbooks](#example-playbooks)
+- [Developing](#developing)
 - [Debugging](#debugging)
 - [Contributing](#contributing)
 
@@ -104,7 +105,7 @@ Supported:
 
 RHEL/CentOS has no release that supports systemd capability controls at this time.
 
-### Add additional environment variables
+### Add additional environment variables or files
 
 Add [environment variables](https://www.freedesktop.org/software/systemd/man/systemd.exec.html#Environment=) to the systemd script.
 
