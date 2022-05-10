@@ -1,6 +1,6 @@
 ---
-- include: preflight.yml
-- include: packages-{{ ansible_pkg_mgr }}.yml
+- include_tasks: preflight.yml
+- include_tasks: packages-{{ ansible_pkg_mgr }}.yml
 
 - name: Create Caddy user
   user:
@@ -38,7 +38,7 @@
   when: caddy_update
   register: caddy_features_cache
 
-- include: github-url.yml
+- include_tasks: github-url.yml
   when: caddy_use_github
 
 - name: Download Caddy
@@ -71,7 +71,7 @@
   register: caddy_download
   tags: skip_ansible_lint
 
-- include: github-extract.yml
+- include_tasks: github-extract.yml
   when: caddy_use_github
 
 - name: Copy Caddy Binary
