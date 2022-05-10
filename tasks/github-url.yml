@@ -1,21 +1,21 @@
 ---
 - name: Get latest Caddy release details
-  uri:
+  ansible.builtin.uri:
     url: https://api.github.com/repos/caddyserver/caddy/releases/latest
     return_content: true
     headers: '{{ caddy_github_headers }}'
   register: latest_caddy_release
 
 - name: Set Caddy tag
-  set_fact:
+  ansible.builtin.set_fact:
     caddy_tag: "{{ (latest_caddy_release.content | from_json).get('tag_name') }}"
 
 - name: Set Caddy version
-  set_fact:
+  ansible.builtin.set_fact:
     caddy_version: "{{ caddy_tag | regex_replace('^v', '') }}"
 
 - name: Set Caddy urls
-  set_fact:
+  ansible.builtin.set_fact:
     caddy_url: "https://github.com/caddyserver/caddy/releases/download/\
                 {{ caddy_tag }}/caddy_{{ caddy_version }}_{{ caddy_os }}_{{ go_arch }}.tar.gz"
     caddy_checksum_url: "sha512:https://github.com/caddyserver/caddy/releases/download/\
