@@ -23,6 +23,7 @@
     headers: '{{ caddy_github_headers }}'
     owner: "{{ caddy_user }}"
     group: "{{ caddy_user_details.group }}"
+    mode: 0640
   retries: 3
   delay: 2
   when: caddy_update
