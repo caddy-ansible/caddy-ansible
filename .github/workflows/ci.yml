@@ -48,6 +48,9 @@ jobs:
       - name: Install test dependencies.
         run: pip3 install ansible ansible-lint yamllint molecule[docker] pytest testinfra
 
+      - name: Install required ansible collections.
+        run: ansible-galaxy collection install community.general --upgrade
+
       - name: Run Molecule tests.
         run: molecule test
         env:
