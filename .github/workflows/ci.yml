@@ -39,6 +39,9 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Install wheel package.
+        run: pip3 install wheel
+
       - name: Install test dependencies.
         run: pip3 install ansible ansible-lint yamllint molecule[docker] pytest testinfra
 
