@@ -58,3 +58,4 @@ jobs:
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_DISTRO: ${{ matrix.distro }}
           ANSIBLE_ROLES_PATH: ~/.ansible/molecule/roles
+          ANSIBLE_VERBOSITY: 3
