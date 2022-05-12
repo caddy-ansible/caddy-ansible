@@ -1,7 +1,7 @@
 ---
 name: CI
 
-on:
+'on':
   pull_request:
   push:
     branches:
@@ -22,9 +22,12 @@ jobs:
         distro:
           - centos8
           - centos7
+          # - fedora33
           - fedora29
+          # - ubuntu2204
           - ubuntu2004
           - ubuntu1804
+          # - debian11
           - debian10
           - debian9
 
@@ -39,8 +42,14 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Install wheel package.
+        run: pip3 install wheel
+
       - name: Install test dependencies.
         run: pip3 install ansible ansible-lint yamllint molecule[docker] pytest testinfra
+
+      - name: Install required ansible collections.
+        run: ansible-galaxy collection install community.general --upgrade
 
       - name: Run Molecule tests.
         run: molecule test
@@ -48,3 +57,5 @@ jobs:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_DISTRO: ${{ matrix.distro }}
+          ANSIBLE_ROLES_PATH: ~/.ansible/molecule/roles
+          ANSIBLE_VERBOSITY: 3

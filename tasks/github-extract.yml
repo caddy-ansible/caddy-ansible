@@ -1,6 +1,6 @@
 ---
 - name: Extract Caddy
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ caddy_home }}/caddy.tar.gz"
     dest: "{{ caddy_home }}"
     copy: false
@@ -11,7 +11,7 @@
   tags: skip_ansible_lint
 
 - name: Extract Caddy
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ caddy_home }}/caddy.tar.gz"
     dest: "{{ caddy_home }}"
     creates: "{{ caddy_home }}/caddy"
