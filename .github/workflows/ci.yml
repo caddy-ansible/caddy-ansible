@@ -22,12 +22,12 @@ jobs:
         distro:
           - centos8
           - centos7
-          - fedora33
+          # - fedora33
           - fedora29
-          - ubuntu2204
+          # - ubuntu2204
           - ubuntu2004
           - ubuntu1804
-          - debian11
+          # - debian11
           - debian10
           - debian9
 
