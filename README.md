@@ -67,6 +67,8 @@ caddy_update: true
 
 Changing this variable will reinstall Caddy with the new packages if `caddy_update` is enabled. Check https://caddyserver.com/download for available packages.
 
+This causes the builds to be downloaded from https://caddyserver.com rather than using the github releases. This service is provided for free by the Caddy maintainers and if you rely on it you should consider donating. The capacity of this service is limited so if you use this role to manage Caddy across many hosts it is recommended to use a different method.
+
 default:
 
 ```yaml
