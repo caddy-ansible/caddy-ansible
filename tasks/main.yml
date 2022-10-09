@@ -48,7 +48,7 @@
     checksum: "{{ caddy_checksum_url | default(omit) }}"
     dest: "{{ caddy_home }}/{{ 'caddy.tar.gz' if caddy_use_github else 'caddy' }}"
     force: true
-    timeout: 300
+    timeout: "{{ caddy_download_timeout }}"
     mode: 0644
     owner: "{{ caddy_user }}"
     group: "{{ caddy_user_details.group }}"
@@ -63,7 +63,7 @@
     url: "{{ caddy_url }}"
     checksum: "{{ caddy_checksum_url | default(omit) }}"
     dest: "{{ caddy_home }}/{{ 'caddy.tar.gz' if caddy_use_github else 'caddy' }}"
-    timeout: 300
+    timeout: "{{ caddy_download_timeout }}"
     mode: 0644
     owner: "{{ caddy_user }}"
     group: "{{ caddy_user_details.group }}"
