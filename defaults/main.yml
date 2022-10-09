@@ -32,3 +32,5 @@ caddy_config: |
 caddy_environment_variables: {}
 caddy_environment_files: []
 caddy_os: linux
+caddy_url_base: "https://caddyserver.com/api/download"
+caddy_download_timeout: 300

@@ -19,7 +19,7 @@ caddy_arch_param_map:
 
 caddy_arch_param: "{{ caddy_arch_param_map[ansible_architecture] | default('arch=' + go_arch) }}"
 
-caddy_url: "https://caddyserver.com/api/download?os={{ caddy_os }}&{{ caddy_arch_param }}\
+caddy_url: "{{ caddy_url_base }}?os={{ caddy_os }}&{{ caddy_arch_param }}\
            {% for pkg in caddy_packages %}\
            &p={{ pkg | urlencode() }}\
            {% endfor %}"
