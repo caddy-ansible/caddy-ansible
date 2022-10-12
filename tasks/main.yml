@@ -118,7 +118,7 @@
 - name: Template systemd service
   ansible.builtin.template:
     src: caddy.service
-    dest: /etc/systemd/system/caddy.service
+    dest: "/etc/systemd/system/{{ caddy_service_name }}"
     owner: root
     group: root
     mode: 0644

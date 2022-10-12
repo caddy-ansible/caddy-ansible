@@ -13,6 +13,7 @@ caddy_log_file: stdout
 caddy_certs_dir: /etc/ssl/caddy
 # additional cli args to pass to caddy
 caddy_additional_args: ""
+caddy_service_name: "caddy.service"
 caddy_systemd_network_dependency: true
 caddy_systemd_capabilities_enabled: false
 caddy_systemd_capabilities: "CAP_NET_BIND_SERVICE"
