@@ -47,7 +47,7 @@ PrivateDevices={{ caddy_systemd_private_devices }}
 ProtectHome={{ caddy_systemd_protect_home }}
 ; Make /usr, /boot, /etc and possibly some more folders read-only.
 ProtectSystem={{ caddy_systemd_protect_system }}
-; … except {{ caddy_certs_dir }}, because we want Letsencrypt-certificates there.
+; ... except {{ caddy_certs_dir }}, because we want Letsencrypt-certificates there.
 ;   This merely retains r/w access rights, it does not add any new. Must still be writable on the host!
 ReadWriteDirectories={{ caddy_certs_dir }} {{ caddy_log_dir }}
 
