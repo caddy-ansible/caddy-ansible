@@ -1,6 +1,9 @@
 ---
-- include_tasks: preflight.yml
-- include_tasks: packages-{{ ansible_pkg_mgr }}.yml
+- name: Include tasks for pre-setup checks
+  ansible.builtin.include_tasks: preflight.yml
+
+- name: Include tasks to install packages
+  ansible.builtin.include_tasks: packages-{{ ansible_pkg_mgr }}.yml
 
 - name: Create Caddy user
   ansible.builtin.user:
@@ -39,7 +42,8 @@
   when: caddy_update
   register: caddy_features_cache
 
-- include_tasks: github-url.yml
+- name: Include tasks to build github URL if downloading from github
+  ansible.builtin.include_tasks: github-url.yml
   when: caddy_use_github
 
 - name: Download Caddy
@@ -72,7 +76,8 @@
   register: caddy_download
   tags: skip_ansible_lint
 
-- ansible.builtin.include_tasks: github-extract.yml
+- name: Include tasks to extract files if downloading from github
+  ansible.builtin.include_tasks: github-extract.yml
   when: caddy_use_github
 
 - name: Copy Caddy Binary
