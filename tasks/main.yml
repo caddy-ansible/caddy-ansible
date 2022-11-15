@@ -106,12 +106,19 @@
     owner: "{{ caddy_user }}"
     mode: 0775
 
+- name: Get information about Caddy config file
+  stat:
+    path: "{{ caddy_conf_dir }}/{{ caddy_conf_filename }}"
+  register: caddy_config_stat
+
 - name: Create caddy config
   ansible.builtin.copy:
     content: "{{ caddy_config }}"
     dest: "{{ caddy_conf_dir }}/{{ caddy_conf_filename }}"
     owner: "{{ caddy_user }}"
     mode: 0640
+  when:
+    - caddy_config_update or not caddy_config_stat.stat.exists
   notify:
     - Reload caddy
 

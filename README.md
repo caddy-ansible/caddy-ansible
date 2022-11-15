@@ -5,6 +5,7 @@
 - [Dependencies](#dependencies)
 - [Role Variables](#role-variables)
   * [The Caddyfile](#the-caddyfile)
+  * [Whether to template the Caddyfile on each run](#whether-to-template-the-caddyfile-on-each-run)
   * [The OS to download caddy for](#the-os-to-download-caddy-for)
   * [Auto update Caddy?](#auto-update-caddy)
   * [Additional Available Packages](#additional-available-packages)
@@ -45,6 +46,14 @@ If you wish to use a template for the config you can do this:
 
 ```yaml
 caddy_config: "{{ lookup('template', 'templates/Caddyfile.j2') }}"
+```
+
+### Whether to template the Caddyfile on each run
+
+By default the Caddyfile is templated on each run. By setting this variable you can ensure the file is created on the first run but never updated after.
+
+```yaml
+caddy_config_update: true
 ```
 
 ### The OS to download caddy for
