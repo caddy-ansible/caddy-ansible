@@ -4,6 +4,7 @@ caddy_user: www-data
 caddy_home: /home/caddy
 caddy_packages: []
 caddy_update: true
+caddy_config_update: true
 caddy_bin_dir: /usr/local/bin
 caddy_conf_dir: /etc/caddy
 caddy_conf_filename: Caddyfile
