@@ -107,7 +107,7 @@
     mode: 0775
 
 - name: Get information about Caddy config file
-  stat:
+  ansible.builtin.stat:
     path: "{{ caddy_conf_dir }}/{{ caddy_conf_filename }}"
   register: caddy_config_stat
 
