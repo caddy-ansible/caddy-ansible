@@ -1,38 +1,37 @@
 ---
 # defaults file for caddy-ansible
-caddy_user: www-data
-caddy_home: /home/caddy
-caddy_packages: []
-caddy_update: true
-caddy_config_update: true
+caddy_additional_args: ""
 caddy_bin_dir: /usr/local/bin
+caddy_certs_dir: /etc/ssl/caddy
 caddy_conf_dir: /etc/caddy
 caddy_conf_filename: Caddyfile
-caddy_github_token: ""
-caddy_log_dir: /var/log/caddy
-caddy_log_file: stdout
-caddy_certs_dir: /etc/ssl/caddy
-# additional cli args to pass to caddy
-caddy_additional_args: ""
-caddy_service_name: "caddy.service"
-caddy_systemd_network_dependency: true
-caddy_systemd_capabilities_enabled: false
-caddy_systemd_capabilities: "CAP_NET_BIND_SERVICE"
-caddy_systemd_restart: "on-failure"   # always, on-success, on-failure, on-abnormal, on-abort, on-watchdog
-caddy_systemd_restart_startlimitinterval: "86400"
-caddy_systemd_restart_startlimitburst: "5"
-caddy_systemd_private_tmp: "true"
-caddy_systemd_private_devices: "true"
-# Disable this because the git module writes to ~/.ssh
-caddy_systemd_protect_home: "false"
-caddy_systemd_protect_system: "full"
-caddy_systemd_nproc_limit: 0
-caddy_setcap: true
 caddy_config: |
   http://localhost:2020
   respond "Hello, world!"
-caddy_environment_variables: {}
-caddy_environment_files: []
-caddy_os: linux
-caddy_url_base: "https://caddyserver.com/api/download"
+caddy_config_update: true
 caddy_download_timeout: 300
+caddy_environment_files: []
+caddy_environment_variables: {}
+caddy_github_token: ""
+caddy_home: /home/caddy
+caddy_log_dir: /var/log/caddy
+caddy_log_file: stdout
+caddy_os: linux
+caddy_packages: []
+caddy_service_name: "caddy.service"
+caddy_setcap: true
+caddy_systemd_capabilities: "CAP_NET_BIND_SERVICE"
+caddy_systemd_capabilities_enabled: false
+caddy_systemd_network_dependency: true
+caddy_systemd_nproc_limit: 0
+caddy_systemd_private_devices: "true"
+# Disable this because the git module writes to ~/.ssh
+caddy_systemd_private_tmp: "true"
+caddy_systemd_protect_home: "false"
+caddy_systemd_protect_system: "full"
+caddy_systemd_restart: "on-failure"   # always, on-success, on-failure, on-abnormal, on-abort, on-watchdog
+caddy_systemd_restart_startlimitburst: "5"
+caddy_systemd_restart_startlimitinterval: "86400"
+caddy_update: true
+caddy_url_base: "https://caddyserver.com/api/download"
+caddy_user: www-data
