@@ -1,4 +1,11 @@
 ---
+- name: Check for options which are incompatible with specifying the caddy_version
+  ansible.builtin.assert:
+    that:
+      - "caddy_packages == []"
+  when:
+    - "caddy_version != ''"
+
 - name: Include tasks for pre-setup checks
   ansible.builtin.include_tasks: preflight.yml
 

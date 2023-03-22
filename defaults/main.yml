@@ -35,3 +35,4 @@ caddy_systemd_restart_startlimitinterval: "86400"
 caddy_update: true
 caddy_url_base: "https://caddyserver.com/api/download"
 caddy_user: www-data
+caddy_version: ''
