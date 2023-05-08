@@ -8,6 +8,8 @@
         url: https://api.github.com/repos/caddyserver/caddy/releases/latest
         return_content: true
         headers: '{{ caddy_github_headers }}'
+      retries: 3
+      delay: 2
       register: latest_caddy_release
     - name: Set Caddy version
       ansible.builtin.set_fact:
