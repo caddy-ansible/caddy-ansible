@@ -25,6 +25,11 @@
     caddy_github_headers: "{{ caddy_github_headers | combine({'Authorization': 'token ' + caddy_github_token}) }}"
   when: caddy_github_token | length > 0
 
+- name: Check if Caddy releases file has been created already
+  ansible.builtin.stat:
+    path: "{{ caddy_home }}/releases.txt"
+  register: caddy_releases_file
+
 - name: Get all Caddy releases
   ansible.builtin.get_url:
     url: https://api.github.com/repos/caddyserver/caddy/git/refs/tags
@@ -36,6 +41,7 @@
     mode: 0640
   retries: 3
   delay: 2
+  when: (caddy_update or not caddy_releases_file.stat.exists)
   register: caddy_releases_cache
 
 - name: Set Caddy features
@@ -79,7 +85,7 @@
     group: "{{ caddy_user_details.group }}"
   retries: 3
   delay: 2
-  when: "(caddy_releases_cache.changed and caddy_update) or caddy_features_cache.changed or caddy_version_cache.changed"
+  when: "caddy_releases_cache.changed or caddy_features_cache.changed or caddy_version_cache.changed"
   register: caddy_binary_cache
   tags: skip_ansible_lint
 
