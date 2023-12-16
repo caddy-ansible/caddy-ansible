@@ -1,0 +1,7 @@
+---
+
+- name: Install libcap-progs
+  community.general.zypper:
+    name: libcap-progs
+    state: present
+  when: caddy_setcap
