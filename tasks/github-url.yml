@@ -1,18 +1,45 @@
 ---
-- name: Get latest Caddy release details
-  ansible.builtin.uri:
-    url: https://api.github.com/repos/caddyserver/caddy/releases/latest
-    return_content: true
-    headers: '{{ caddy_github_headers }}'
-  register: latest_caddy_release
+- name: If using the latest release work out information about what version that is
+  when:
+    - "caddy_version == ''"
+  block:
+    - name: Get latest Caddy release details
+      ansible.builtin.uri:
+        url: https://api.github.com/repos/caddyserver/caddy/releases/latest
+        return_content: true
+        headers: '{{ caddy_github_headers }}'
+      retries: 3
+      delay: 2
+      register: latest_caddy_release
+    - name: Set Caddy version
+      ansible.builtin.set_fact:
+        caddy_version: "{{ (latest_caddy_release.content | from_json).get('tag_name') | regex_replace('^v', '') }}"
 
 - name: Set Caddy tag
   ansible.builtin.set_fact:
-    caddy_tag: "{{ (latest_caddy_release.content | from_json).get('tag_name') }}"
+    caddy_tag: "v{{ caddy_version }}"
 
-- name: Set Caddy version
-  ansible.builtin.set_fact:
-    caddy_version: "{{ caddy_tag | regex_replace('^v', '') }}"
+- name: Ensure that if a caddy_version was specified it is available
+  when:
+    - "caddy_version != ''"
+  block:
+    - name: Load JSON list of releases
+      ansible.builtin.slurp:
+        src: "{{ caddy_home }}/releases.txt"
+      register: caddy_releases_data
+    - name: Set variable with loaded JSON dictionary
+      ansible.builtin.set_fact:
+        caddy_releases_json: "{{ caddy_releases_data['content'] | b64decode | from_json }}"
+    - name: Set variable with list of available releases
+      ansible.builtin.set_fact:
+        caddy_available_releases: "{{ caddy_releases_json | json_query('[].ref') | regex_replace('refs/tags/', '') }}"
+    - name: Show available Caddy releases
+      ansible.builtin.debug:
+        msg: "Available Releases: {{ caddy_available_releases }}"
+    - name: Check version in list
+      ansible.builtin.assert:
+        that:
+          - "caddy_tag in caddy_available_releases"
 
 - name: Set Caddy urls
   ansible.builtin.set_fact:

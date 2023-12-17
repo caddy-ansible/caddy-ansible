@@ -1,4 +1,11 @@
 ---
+- name: Check for options which are incompatible with specifying the caddy_version
+  ansible.builtin.assert:
+    that:
+      - "caddy_packages == []"
+  when:
+    - "caddy_version != ''"
+
 - name: Include tasks for pre-setup checks
   ansible.builtin.include_tasks: preflight.yml
 
@@ -18,18 +25,23 @@
     caddy_github_headers: "{{ caddy_github_headers | combine({'Authorization': 'token ' + caddy_github_token}) }}"
   when: caddy_github_token | length > 0
 
+- name: Check if Caddy releases file has been created already
+  ansible.builtin.stat:
+    path: "{{ caddy_home }}/releases.txt"
+  register: caddy_releases_file
+
 - name: Get all Caddy releases
   ansible.builtin.get_url:
     url: https://api.github.com/repos/caddyserver/caddy/git/refs/tags
     dest: "{{ caddy_home }}/releases.txt"
-    force: true
+    force: "{{ caddy_update }}"
     headers: '{{ caddy_github_headers }}'
     owner: "{{ caddy_user }}"
     group: "{{ caddy_user_details.group }}"
     mode: 0640
   retries: 3
   delay: 2
-  when: caddy_update
+  when: (caddy_update or not caddy_releases_file.stat.exists)
   register: caddy_releases_cache
 
 - name: Set Caddy features
@@ -46,6 +58,21 @@
   ansible.builtin.include_tasks: github-url.yml
   when: caddy_use_github
 
+- name: Check if Caddy version file has been created already
+  ansible.builtin.stat:
+    path: "{{ caddy_home }}/version.txt"
+  register: caddy_version_file
+
+- name: Set Caddy version
+  ansible.builtin.copy:
+    content: "{{ caddy_version }}"
+    dest: "{{ caddy_home }}/version.txt"
+    mode: 0640
+    owner: "{{ caddy_user }}"
+    group: "{{ caddy_user_details.group }}"
+  when: (caddy_update or not caddy_version_file.stat.exists)
+  register: caddy_version_cache
+
 - name: Download Caddy
   ansible.builtin.get_url:
     url: "{{ caddy_url }}"
@@ -58,7 +85,7 @@
     group: "{{ caddy_user_details.group }}"
   retries: 3
   delay: 2
-  when: caddy_releases_cache.changed or caddy_features_cache.changed
+  when: "caddy_releases_cache.changed or caddy_features_cache.changed or caddy_version_cache.changed"
   register: caddy_binary_cache
   tags: skip_ansible_lint
 

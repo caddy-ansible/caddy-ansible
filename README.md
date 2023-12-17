@@ -7,6 +7,7 @@
   * [The Caddyfile](#the-caddyfile)
   * [Whether to template the Caddyfile on each run](#whether-to-template-the-caddyfile-on-each-run)
   * [The OS to download caddy for](#the-os-to-download-caddy-for)
+  * [The version of Caddy to use](#the-version-of-caddy-to-use)
   * [Auto update Caddy?](#auto-update-caddy)
   * [Additional Available Packages](#additional-available-packages)
   * [Use `setcap`?](#use-setcap)
@@ -63,6 +64,18 @@ default:
 ```yaml
 caddy_os: linux
 ```
+
+### The version of Caddy to use
+
+default:
+
+```yaml
+caddy_version: ''
+```
+
+This option cannot be used together with `caddy_packages` because that option prevents the downloads from using Github, meaning no older versions are available.
+
+The version of Caddy will only be changed after the first run of the role if `caddy_update` is set to `true`, otherwise the version of Caddy will remain as the one selected on first run of the role.
 
 ### Auto update Caddy?
 
