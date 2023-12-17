@@ -20,16 +20,16 @@ jobs:
     strategy:
       matrix:
         distro:
+          # Commented-out OS are too new and suffer from https://github.com/caddy-ansible/caddy-ansible/issues/44
+          # so need to fix that before enabling again.
           - centos8
-          - centos7
-          # - fedora33
-          - fedora29
-          # - ubuntu2204
-          - ubuntu2004
+          # - fedora39
           - ubuntu1804
-          # - debian11
+          - ubuntu2004
+          # - ubuntu2204
           - debian10
-          - debian9
+          # - debian11
+          # - debian12
 
     steps:
       - name: Check out the codebase.
@@ -45,8 +45,11 @@ jobs:
       - name: Install wheel package.
         run: pip3 install wheel
 
+      - name: Install requirements.txt dependencies
+        run: pip3 install -r requirements.txt
+
       - name: Install test dependencies.
-        run: pip3 install ansible ansible-lint yamllint molecule[docker] pytest testinfra
+        run: pip3 install ansible ansible-lint yamllint molecule-plugins[docker,lint] pytest pytest-testinfra
 
       - name: Install required ansible collections.
         run: ansible-galaxy collection install community.general --upgrade
@@ -57,5 +60,4 @@ jobs:
           PY_COLORS: '1'
           ANSIBLE_FORCE_COLOR: '1'
           MOLECULE_DISTRO: ${{ matrix.distro }}
-          ANSIBLE_ROLES_PATH: ~/.ansible/molecule/roles
           ANSIBLE_VERBOSITY: 3

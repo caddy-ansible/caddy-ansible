@@ -1,5 +1,6 @@
 ---
-- hosts: all
+- name: Test caddy-ansible by applying the role
+  hosts: all
   become: true
   tasks:
     - name: Install curl
@@ -7,4 +8,4 @@
         name: curl
         state: present
   roles:
-    - caddy_ansible.caddy_ansible
+    - role: caddy_ansible.caddy_ansible
