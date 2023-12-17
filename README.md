@@ -231,9 +231,23 @@ Example with DigitalOcean DNS for TLS:
 
 ## Developing
 
+It is recommended to create a virtualenv for development and then install all requirements for tests:
+
 ```bash
-python3 -m pip install -U ansible ansible-lint yamllint molecule[docker] pytest testinfra
+python3 -m pip install -U requirements.txt
+python3 -m pip install -U ansible ansible-lint yamllint molecule-plugins[docker,lint] pytest pytest-testinfra
+```
+
+After doing so you can run the molecule tests with:
+
+```bash
 PY_COLORS=1 ANSIBLE_FORCE_COLOR=1 MOLECULE_DISTRO=ubuntu2004 molecule test
+```
+
+Or run the alternate playbook for testing when a specific version is requested:
+
+```bash
+PY_COLORS=1 ANSIBLE_FORCE_COLOR=1 MOLECULE_DISTRO=ubuntu2004 MOLECULE_PLAYBOOK=converge-version.yml molecule test
 ```
 
 ## Debugging
