@@ -6,12 +6,6 @@
       caddy_version: '2.7.6'
   tasks:
     - name: Ensure ss is installed (for testinfra)
-      ansible.builtin.yum:
-        name: iproute
-        state: present
-      when: ansible_distribution in ['CentOS', 'Red Hat Enterprise Linux', 'Fedora']
-    - name: Ensure ss is installed (for testinfra)
       ansible.builtin.package:
-        name: iproute2
+        name: "iproute{{ '2' if ansible_os_family == 'Debian' }}"
         state: present
-      when: ansible_distribution not in ['CentOS', 'Red Hat Enterprise Linux', 'Fedora']
