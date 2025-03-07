@@ -26,7 +26,7 @@ This role installs and configures the caddy web server. The user can specify any
 
 ## Dependencies
 
-None
+`jmespath`, which must be manually installed on the Ansible controller. See [Selecting JSON data: JSON queries](https://docs.ansible.com/ansible/latest/collections/community/general/docsite/filter_guide_selecting_json_data.html) for more details.
 
 ## Role Variables
 
