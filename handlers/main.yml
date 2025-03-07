@@ -10,3 +10,5 @@
   ansible.builtin.systemd:
     name: caddy
     state: reloaded
+  retries: 3
+  delay: 3
