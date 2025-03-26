@@ -1,0 +1,43 @@
+
+- name: Download xcaddy
+  ansible.builtin.get_url:
+    url: "{{ xcaddy_url_base }}/v{{ xcaddy_version }}/xcaddy_{{ xcaddy_version}}_{{ caddy_os}}_{{ go_arch }}.tar.gz"
+    dest: "{{ caddy_home }}/{{ 'xcaddy.tar.gz' }}"
+    force: true
+    timeout: "{{ caddy_download_timeout }}"
+    mode: 0644
+    owner: "{{ caddy_user }}"
+    group: "{{ caddy_user_details.group }}"
+  retries: 3
+  delay: 2
+  # when: "caddy_releases_cache.changed or caddy_features_cache.changed or caddy_version_cache.changed"
+  register: xcaddy_binary_cache
+  tags: skip_ansible_lint
+
+- name: Extract xcaddy
+  ansible.builtin.unarchive:
+    src: "{{ caddy_home }}/xcaddy.tar.gz"
+    dest: "{{ caddy_home }}"
+    copy: false
+    mode: 0644
+    owner: "{{ caddy_user }}"
+    group: "{{ caddy_user_details.group }}"
+  when: xcaddy_binary_cache.changed
+  tags: skip_ansible_lint
+
+- name: Extract xcaddy
+  ansible.builtin.unarchive:
+    src: "{{ caddy_home }}/xcaddy.tar.gz"
+    dest: "{{ caddy_home }}"
+    creates: "{{ caddy_home }}/xcaddy"
+    copy: false
+    mode: 0644
+    owner: "{{ caddy_user }}"
+    group: "{{ caddy_user_details.group }}"
+
+- name: Copy xcaddy Binary
+  ansible.builtin.copy:
+    src: "{{ caddy_home }}/xcaddy"
+    dest: "{{ caddy_bin_dir }}/xcaddy"
+    mode: 0755
+    remote_src: true

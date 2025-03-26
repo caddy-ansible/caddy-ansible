@@ -36,3 +36,7 @@ caddy_update: true
 caddy_url_base: "https://caddyserver.com/api/download"
 caddy_user: www-data
 caddy_version: ''
+
+caddy_build: false
+xcaddy_version: '0.4.4'
+xcaddy_url_base: "https://github.com/caddyserver/xcaddy/releases/download"

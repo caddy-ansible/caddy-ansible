@@ -73,39 +73,64 @@
   when: (caddy_update or not caddy_version_file.stat.exists)
   register: caddy_version_cache
 
-- name: Download Caddy
-  ansible.builtin.get_url:
-    url: "{{ caddy_url }}"
-    checksum: "{{ caddy_checksum_url | default(omit) }}"
-    dest: "{{ caddy_home }}/{{ 'caddy.tar.gz' if caddy_use_github else 'caddy' }}"
-    force: true
-    timeout: "{{ caddy_download_timeout }}"
-    mode: 0644
-    owner: "{{ caddy_user }}"
-    group: "{{ caddy_user_details.group }}"
-  retries: 3
-  delay: 2
-  when: "caddy_releases_cache.changed or caddy_features_cache.changed or caddy_version_cache.changed"
-  register: caddy_binary_cache
-  tags: skip_ansible_lint
+- name: Build Caddy with xCaddy
+  block:
 
-- name: Download Caddy
-  ansible.builtin.get_url:
-    url: "{{ caddy_url }}"
-    checksum: "{{ caddy_checksum_url | default(omit) }}"
-    dest: "{{ caddy_home }}/{{ 'caddy.tar.gz' if caddy_use_github else 'caddy' }}"
-    timeout: "{{ caddy_download_timeout }}"
-    mode: 0644
-    owner: "{{ caddy_user }}"
-    group: "{{ caddy_user_details.group }}"
-  retries: 3
-  delay: 2
-  register: caddy_download
-  tags: skip_ansible_lint
+    - name: Check if xcaddy already exists
+      ansible.builtin.stat:
+        path: "{{ caddy_bin_dir }}/xcaddy"
+      register: xcaddy_bin
 
-- name: Include tasks to extract files if downloading from github
-  ansible.builtin.include_tasks: github-extract.yml
-  when: caddy_use_github
+    - name: Download xcaddy
+      ansible.builtin.include_tasks: github-xcaddy.yml
+      when: not xcaddy_bin.stat.exists
+
+    - name: Build caddy
+      ansible.builtin.command:
+        cmd: "{{ caddy_bin_dir }}/xcaddy build --with {{ caddy_packages | join(' --with ') }}"
+      args:
+        chdir: "{{ caddy_home }}"
+
+  when: caddy_build
+
+- name: Download pre-built Caddy
+  block:
+
+    - name: Download Caddy
+      ansible.builtin.get_url:
+        url: "{{ caddy_url }}"
+        checksum: "{{ caddy_checksum_url | default(omit) }}"
+        dest: "{{ caddy_home }}/{{ 'caddy.tar.gz' if caddy_use_github else 'caddy' }}"
+        force: true
+        timeout: "{{ caddy_download_timeout }}"
+        mode: 0644
+        owner: "{{ caddy_user }}"
+        group: "{{ caddy_user_details.group }}"
+      retries: 3
+      delay: 2
+      when: "caddy_releases_cache.changed or caddy_features_cache.changed or caddy_version_cache.changed"
+      register: caddy_binary_cache
+      tags: skip_ansible_lint
+
+    - name: Download Caddy
+      ansible.builtin.get_url:
+        url: "{{ caddy_url }}"
+        checksum: "{{ caddy_checksum_url | default(omit) }}"
+        dest: "{{ caddy_home }}/{{ 'caddy.tar.gz' if caddy_use_github else 'caddy' }}"
+        timeout: "{{ caddy_download_timeout }}"
+        mode: 0644
+        owner: "{{ caddy_user }}"
+        group: "{{ caddy_user_details.group }}"
+      retries: 3
+      delay: 2
+      register: caddy_download
+      tags: skip_ansible_lint
+
+    - name: Include tasks to extract files if downloading from github
+      ansible.builtin.include_tasks: github-extract.yml
+      when: caddy_use_github
+
+  when: not caddy_build
 
 - name: Copy Caddy Binary
   ansible.builtin.copy:
