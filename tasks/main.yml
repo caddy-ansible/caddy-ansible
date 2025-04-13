@@ -144,6 +144,7 @@
     dest: "{{ caddy_conf_dir }}/{{ caddy_conf_filename }}"
     owner: "{{ caddy_user }}"
     mode: 0640
+    validate: '"{{ caddy_bin_dir }}/caddy" validate --config %s {{ caddy_additional_args }}'
   when:
     - caddy_config_update or not caddy_config_stat.stat.exists
   notify:
