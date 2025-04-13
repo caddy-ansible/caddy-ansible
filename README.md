@@ -37,10 +37,27 @@ See [Caddyfile docs](https://caddyserver.com/docs/caddyfile). Notice the `|` use
 default:
 
 ```yaml
-caddy_conf_filename: Caddyfile
+caddy_conf_filename: config.json
 caddy_config: |
-  http://localhost:2020
-  respond "Hello, world!"
+  {
+    "apps": {
+      "http": {
+        "servers": {
+          "example": {
+            "listen": [":2020"],
+            "routes": [
+              {
+                "handle": [{
+                  "handler": "static_response",
+                  "body": "Hello, world!"
+                }]
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
 ```
 
 If you wish to use a template for the config you can do this:
@@ -161,10 +178,10 @@ default:
 caddy_additional_args: ""
 ```
 
-Example for LetsEncrypt staging:
+Example for using Caddyfile configuration format:
 
 ```yaml
-caddy_additional_args: "-ca https://acme-staging.api.letsencrypt.org/directory"
+caddy_additional_args: "--adapter caddyfile"
 ```
 
 ### Use a GitHub OAuth token to request the list of caddy releases
@@ -185,6 +202,7 @@ caddy_github_token: ""
   become: yes
   roles:
     - role: caddy_ansible.caddy_ansible
+      caddy_additional_args: "--adapter caddyfile"
       caddy_config: |
         files.example.com
         encode gzip
@@ -200,9 +218,9 @@ Example with DigitalOcean DNS for TLS:
 - hosts: all
   roles:
     - role: caddy_ansible.caddy_ansible
+      caddy_additional_args: "--adapter caddyfile"
       caddy_environment_variables:
         DO_AUTH_TOKEN: "your-token-here"
-      caddy_systemd_capabilities_enabled: true
       caddy_systemd_network_dependency: false
       caddy_packages: ["github.com/caddy-dns/lego-deprecated"]
       caddy_config: |
@@ -212,9 +230,7 @@ Example with DigitalOcean DNS for TLS:
             reverse_proxy http://localhost:8080 {
                 header_up Host {http.request.host}
                 header_up X-Real-IP {http.request.remote.host}
-                header_up X-Forwarded-For {http.request.remote.host}
                 header_up X-Forwarded-Port {http.request.port}
-                header_up X-Forwarded-Proto {http.request.scheme}
             }
 
             tls webmaster@example.com {
