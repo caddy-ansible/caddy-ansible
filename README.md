@@ -37,10 +37,27 @@ See [Caddyfile docs](https://caddyserver.com/docs/caddyfile). Notice the `|` use
 default:
 
 ```yaml
-caddy_conf_filename: Caddyfile
+caddy_conf_filename: config.json
 caddy_config: |
-  http://localhost:2020
-  respond "Hello, world!"
+  {
+    "apps": {
+      "http": {
+        "servers": {
+          "example": {
+            "listen": [":2020"],
+            "routes": [
+              {
+                "handle": [{
+                  "handler": "static_response",
+                  "body": "Hello, world!"
+                }]
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
 ```
 
 If you wish to use a template for the config you can do this:
