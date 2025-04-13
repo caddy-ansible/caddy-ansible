@@ -161,10 +161,10 @@ default:
 caddy_additional_args: ""
 ```
 
-Example for LetsEncrypt staging:
+Example for using Caddyfile configuration format:
 
 ```yaml
-caddy_additional_args: "-ca https://acme-staging.api.letsencrypt.org/directory"
+caddy_additional_args: "--adapter caddyfile"
 ```
 
 ### Use a GitHub OAuth token to request the list of caddy releases
