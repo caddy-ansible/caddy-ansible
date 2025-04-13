@@ -165,6 +165,7 @@
     capability: cap_net_bind_service+eip
     state: present
   when: caddy_setcap
+  changed_when: "'molecule-idempotence-notest' not in ansible_skip_tags"
 
 - name: Ensure caddy service is up-to-date before starting it
   ansible.builtin.meta: flush_handlers
