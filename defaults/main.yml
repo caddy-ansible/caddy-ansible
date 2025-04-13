@@ -4,10 +4,27 @@ caddy_additional_args: ""
 caddy_bin_dir: /usr/local/bin
 caddy_certs_dir: /etc/ssl/caddy
 caddy_conf_dir: /etc/caddy
-caddy_conf_filename: Caddyfile
+caddy_conf_filename: config.json
 caddy_config: |
-  http://localhost:2020
-  respond "Hello, world!"
+  {
+    "apps": {
+      "http": {
+        "servers": {
+          "example": {
+            "listen": [":2020"],
+            "routes": [
+              {
+                "handle": [{
+                  "handler": "static_response",
+                  "body": "Hello, world!"
+                }]
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
 caddy_config_update: true
 caddy_download_timeout: 300
 caddy_environment_files: []
