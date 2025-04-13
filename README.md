@@ -202,6 +202,7 @@ caddy_github_token: ""
   become: yes
   roles:
     - role: caddy_ansible.caddy_ansible
+      caddy_additional_args: "--adapter caddyfile"
       caddy_config: |
         files.example.com
         encode gzip
@@ -217,9 +218,9 @@ Example with DigitalOcean DNS for TLS:
 - hosts: all
   roles:
     - role: caddy_ansible.caddy_ansible
+      caddy_additional_args: "--adapter caddyfile"
       caddy_environment_variables:
         DO_AUTH_TOKEN: "your-token-here"
-      caddy_systemd_capabilities_enabled: true
       caddy_systemd_network_dependency: false
       caddy_packages: ["github.com/caddy-dns/lego-deprecated"]
       caddy_config: |
@@ -229,9 +230,7 @@ Example with DigitalOcean DNS for TLS:
             reverse_proxy http://localhost:8080 {
                 header_up Host {http.request.host}
                 header_up X-Real-IP {http.request.remote.host}
-                header_up X-Forwarded-For {http.request.remote.host}
                 header_up X-Forwarded-Port {http.request.port}
-                header_up X-Forwarded-Proto {http.request.scheme}
             }
 
             tls webmaster@example.com {
