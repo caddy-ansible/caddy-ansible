@@ -4,7 +4,7 @@
     src: "{{ caddy_home }}/caddy.tar.gz"
     dest: "{{ caddy_home }}"
     copy: false
-    mode: 0644
+    mode: "0644"
     owner: "{{ caddy_user }}"
     group: "{{ caddy_user_details.group }}"
   when: caddy_binary_cache.changed
@@ -16,6 +16,6 @@
     dest: "{{ caddy_home }}"
     creates: "{{ caddy_home }}/caddy"
     copy: false
-    mode: 0644
+    mode: "0644"
     owner: "{{ caddy_user }}"
     group: "{{ caddy_user_details.group }}"
