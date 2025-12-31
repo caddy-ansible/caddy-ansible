@@ -38,7 +38,7 @@
     headers: '{{ caddy_github_headers }}'
     owner: "{{ caddy_user }}"
     group: "{{ caddy_user_details.group }}"
-    mode: 0640
+    mode: "0640"
   retries: 3
   delay: 2
   when: (caddy_update or not caddy_releases_file.stat.exists)
@@ -48,7 +48,7 @@
   ansible.builtin.copy:
     content: "{{ ','.join(caddy_packages) }}"
     dest: "{{ caddy_home }}/features.txt"
-    mode: 0640
+    mode: "0640"
     owner: "{{ caddy_user }}"
     group: "{{ caddy_user_details.group }}"
   when: caddy_update
@@ -67,7 +67,7 @@
   ansible.builtin.copy:
     content: "{{ caddy_version }}"
     dest: "{{ caddy_home }}/version.txt"
-    mode: 0640
+    mode: "0640"
     owner: "{{ caddy_user }}"
     group: "{{ caddy_user_details.group }}"
   when: (caddy_update or not caddy_version_file.stat.exists)
@@ -80,7 +80,7 @@
     dest: "{{ caddy_home }}/{{ 'caddy.tar.gz' if caddy_use_github else 'caddy' }}"
     force: true
     timeout: "{{ caddy_download_timeout }}"
-    mode: 0644
+    mode: "0644"
     owner: "{{ caddy_user }}"
     group: "{{ caddy_user_details.group }}"
   retries: 3
@@ -95,7 +95,7 @@
     checksum: "{{ caddy_checksum_url | default(omit) }}"
     dest: "{{ caddy_home }}/{{ 'caddy.tar.gz' if caddy_use_github else 'caddy' }}"
     timeout: "{{ caddy_download_timeout }}"
-    mode: 0644
+    mode: "0644"
     owner: "{{ caddy_user }}"
     group: "{{ caddy_user_details.group }}"
   retries: 3
@@ -111,7 +111,7 @@
   ansible.builtin.copy:
     src: "{{ caddy_home }}/caddy"
     dest: "{{ caddy_bin }}"
-    mode: 0755
+    mode: "0755"
     remote_src: true
   notify:
     - Restart caddy
@@ -121,7 +121,7 @@
     path: "{{ item }}"
     state: directory
     owner: "{{ caddy_user }}"
-    mode: 0770
+    mode: "0770"
   with_items:
     - "{{ caddy_conf_dir }}"
     - "{{ caddy_certs_dir }}"
@@ -131,7 +131,7 @@
     path: "{{ caddy_log_dir }}"
     state: directory
     owner: "{{ caddy_user }}"
-    mode: 0775
+    mode: "0775"
 
 - name: Get information about Caddy config file
   ansible.builtin.stat:
@@ -143,7 +143,7 @@
     content: "{{ caddy_config }}"
     dest: "{{ caddy_conf_dir }}/{{ caddy_conf_filename }}"
     owner: "{{ caddy_user }}"
-    mode: 0640
+    mode: "0640"
   when:
     - caddy_config_update or not caddy_config_stat.stat.exists
   notify:
@@ -155,7 +155,7 @@
     dest: "/etc/systemd/system/{{ caddy_service_name }}"
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   notify:
     - Restart caddy
 
