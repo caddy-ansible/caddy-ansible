@@ -162,7 +162,7 @@
 - name: Set capability on the binary file to be able to bind to TCP port <1024
   community.general.capabilities:
     path: "{{ caddy_bin }}"
-    capability: cap_net_bind_service+eip
+    capability: cap_net_bind_service=eip
     state: present
   when: caddy_setcap
   changed_when: "'molecule-idempotence-notest' not in ansible_skip_tags"
