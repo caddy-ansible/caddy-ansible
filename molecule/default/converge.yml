@@ -8,9 +8,9 @@
       ansible.builtin.yum:
         name: iproute
         state: present
-      when: ansible_distribution in ['CentOS', 'Red Hat Enterprise Linux', 'Fedora']
+      when: ansible_facts['distribution'] in ['CentOS', 'Red Hat Enterprise Linux', 'Fedora']
     - name: Ensure ss is installed (for testinfra)
       ansible.builtin.package:
         name: iproute2
         state: present
-      when: ansible_distribution not in ['CentOS', 'Red Hat Enterprise Linux', 'Fedora']
+      when: ansible_facts['distribution'] not in ['CentOS', 'Red Hat Enterprise Linux', 'Fedora']
